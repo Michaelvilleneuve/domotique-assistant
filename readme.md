@@ -1,8 +1,5 @@
-################
-Copyright 2015 Michaël Villeneuve
-################
-
-Configuration globale : 
+Assistant Domotique
+=====================
 
 L'assistant domotique fonctionne sur un serveur Apache2 avec PHP5.
 Le tout est prévu pour fonctionner sur un raspberry PI sous Raspbian mais fonctionnera sur n'importe quel appareil sous Debian, et avec quelques adaptations sur d'autres distributions Linux.
@@ -20,7 +17,8 @@ Les prérequis de l'installation sont les suivants :
 	- RCSwitch --> git clone https://github.com/r10r/rcswitch-pi
 	- Wake On Lan --> sudo apt-get install wakeonlan
 
-Fonctionnalités :
+Fonctionnalités
+---------------
 
 Voici les différentes fonctionnalités de l'assistant ainsi que les besoins logiciels ou matériels :
 
@@ -60,46 +58,51 @@ Voici les différentes fonctionnalités de l'assistant ainsi que les besoins log
 
 	Requis : Capteur de température pour la gestion automatisée, prise télécommandées, émetteur 433mhz
 
-	- Serveur Wake On Lan (Allumage et extinction à distance d'un ordinateur) : En configurant votre ordinateur fixe pour le Wake On Lan, vous pourrez réveiller et éteindre votre ordinateur à distance en renseignant son adresse mac.
-	Pour vérifier l'état de l'ordinateur vous devrez renseigner son adresse IP (elle doit donc être fixe).
+- Serveur Wake On Lan (Allumage et extinction à distance d'un ordinateur) : En configurant votre ordinateur fixe pour le Wake On Lan, vous pourrez réveiller et éteindre votre ordinateur à distance en renseignant son adresse mac.
+Pour vérifier l'état de l'ordinateur vous devrez renseigner son adresse IP (elle doit donc être fixe).
 
-	Requis : Un PC fixe secondaire, WakeOnlan
+Requis : Un PC fixe secondaire, WakeOnlan
 
-	- Alarme de maison : Couplé à un capteur de mouvement, vous pourrez transformer votre raspberry pi en un système efficace d'alarme. Lorsque vous partez de chez vous, activez le verrouillage et la maison sera automatiquement mise sur alarme.
-	Si un mouvement est détécté, une alarme se déclenche et un SMS vous sera automatiquement envoyé.
+- Alarme de maison : Couplé à un capteur de mouvement, vous pourrez transformer votre raspberry pi en un système efficace d'alarme. Lorsque vous partez de chez vous, activez le verrouillage et la maison sera automatiquement mise sur alarme.
+Si un mouvement est détécté, une alarme se déclenche et un SMS vous sera automatiquement envoyé.
 
-	Requis : Capteur de mouvement, SMSENVOI
+Requis : Capteur de mouvement, SMSENVOI
 
 
 
-Fonctionnement technique : 
+Fonctionnement technique 
+========================
 
-	La configuration principale de l'assistant doit être faite dans le controlleur. Vous renseignerez dans les attributs votre configuration.
+La configuration principale de l'assistant doit être faite dans le controlleur. Vous renseignerez dans les attributs votre configuration.
 
-	Front-end : Le front-end est basé sur Framework7 http://www.idangero.us/framework7/. L'interface est celle d'IOS 7 et est optimisée pour iPhone.
-	Les icônes sont issues d'IOS7 via la police d'icône pe7 icons.
+Front-end
+---------
 
-	Le layout global est constitué par les fichiers Header.php et Footer.php.
-	Le système de vues se retrouve dans les fichiers ayant la terminaison '-view.php'.
+Le front-end est basé sur Framework7 http://www.idangero.us/framework7/. L'interface est celle d'IOS 7 et est optimisée pour iPhone.
+Les icônes sont issues d'IOS7 via la police d'icône pe7 icons.
 
-	Tous les différents onglets de l'application se retrouvent dans ces fichiers. 
+Le layout global est constitué par les fichiers Header.php et Footer.php.
+Le système de vues se retrouve dans les fichiers ayant la terminaison '-view.php'.
 
-	L'ensemble des requêtes sont faites en AJAX. Le javascript de chaque vue se trouve à la fin des fichiers de vue. Vous pourrez ainsi facilement ajouter des éléments à controler en quelques lignes de code, en vous basant sur l'existant.
+Tous les différents onglets de l'application se retrouvent dans ces fichiers. 
 
-	Back-end :
+L'ensemble des requêtes sont faites en AJAX. Le javascript de chaque vue se trouve à la fin des fichiers de vue. Vous pourrez ainsi facilement ajouter des éléments à controler en quelques lignes de code, en vous basant sur l'existant.
 
-	L'assistant est développé sur la base d'une architecture MVC. N'ayant pas souhaité pour l'instant intégrer de base de données, le Model est remplacé par des fichiers servant de stockage, les requêtes vers les fichiers sont effectuées dans le controlleur. 
+Back-end
+--------
 
-	L'ensemble des requêtes AJAX atteignent la méthode Ajax. L'action à effectuée est déterminée par le SWITCH action. 
-	Afin d'ajouter des inputs à administrer sur le front, vous n'avez ainsi qu'à rajouter un cas dans le switch. La requête appellée via la fonction post() dans la vue sera traitée à cet endroit. 
+L'assistant est développé sur la base d'une architecture MVC. N'ayant pas souhaité pour l'instant intégrer de base de données, le Model est remplacé par des fichiers servant de stockage, les requêtes vers les fichiers sont effectuées dans le controlleur. 
 
-	Par défaut 1 seul controlleur est mis en place. En fonction de vos besoins vous préférerez certainement rajouter des controlleurs afin de séparer les fonctionnalités de l'assistant.
+L'ensemble des requêtes AJAX atteignent la méthode Ajax. L'action à effectuée est déterminée par le SWITCH action. 
+Afin d'ajouter des inputs à administrer sur le front, vous n'avez ainsi qu'à rajouter un cas dans le switch. La requête appellée via la fonction post() dans la vue sera traitée à cet endroit. 
 
-	Les routes peuvent être administrées via le routeur.
+Par défaut 1 seul controlleur est mis en place. En fonction de vos besoins vous préférerez certainement rajouter des controlleurs afin de séparer les fonctionnalités de l'assistant.
 
-	L'API d'envoi de SMS peut-être activée en renseignant vos clé API dans le fichiers /smsenvoi/smsenvoi.config.php
+Les routes peuvent être administrées via le routeur.
 
-	Les fichiers *.txt servent à stocker les données des capteurs, mais également à stocker la configuration (gestion automatisée du chauffage, du réveil, etc.).
+L'API d'envoi de SMS peut-être activée en renseignant vos clé API dans le fichiers /smsenvoi/smsenvoi.config.php
+
+Les fichiers *.txt servent à stocker les données des capteurs, mais également à stocker la configuration (gestion automatisée du chauffage, du réveil, etc.).
 
 
 
