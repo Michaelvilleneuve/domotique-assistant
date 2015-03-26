@@ -6,16 +6,19 @@ Le tout est prévu pour fonctionner sur un raspberry PI sous Raspbian mais fonct
 L'ensemble ne nécessite pas de base de données dans la mesure ou les données sont stockées dans les fichiers *.txt.
 
 Les prérequis de l'installation sont les suivants : 
-	- APACHE 2 --> sudo apt-get install apache2
-	- PHP5 --> sudo apt-get install php5 libapache2-mod-php5
-	- CURL --> sudo apt-get php5-curl
-	- WWW-DATA doit avoir les privilèges root (pour les commandes unix avec 'exec') --> attention aux permissions que vous offrez à l'utilisateur WWW-DATA selon votre configuration réseau
-	- ALSAMIXER --> Gestion du son (volume) "sudo apt-get install alsa-utils"
-	- MPG123 --> Utilisé pour lire les MP3 retournés par Google ainsi que pour la Radio "sudo apt-get install mpg123"
-	- MOCP --> Gestion du lecteur média "sudo apt-get update && sudo apt-get install moc moc-ffmpeg-plugin"
-	- WiringPi --> git clone git://git.drogon.net/wiringPi
-	- RCSwitch --> git clone https://github.com/r10r/rcswitch-pi
-	- Wake On Lan --> sudo apt-get install wakeonlan
+	* APACHE 2 
+
+	sudo apt-get install apache2
+	
+	* PHP5 --> sudo apt-get install php5 libapache2-mod-php5
+	* CURL --> sudo apt-get php5-curl
+	* WWW-DATA doit avoir les privilèges root (pour les commandes unix avec 'exec') --> attention aux permissions que vous offrez à l'utilisateur WWW-DATA selon votre configuration réseau
+	* ALSAMIXER --> Gestion du son (volume) "sudo apt-get install alsa-utils"
+	* MPG123 --> Utilisé pour lire les MP3 retournés par Google ainsi que pour la Radio "sudo apt-get install mpg123"
+	* MOCP --> Gestion du lecteur média "sudo apt-get update && sudo apt-get install moc moc-ffmpeg-plugin"
+	* WiringPi --> git clone git://git.drogon.net/wiringPi
+	* RCSwitch --> git clone https://github.com/r10r/rcswitch-pi
+	* Wake On Lan --> sudo apt-get install wakeonlan
 
 Fonctionnalités
 ---------------
