@@ -1,0 +1,41 @@
+.tabbar i.icon {
+    height: 31px;
+}
+i.icon {
+    font-size: 30px;
+}
+i.stats {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    color: #007aff;
+    display: inline-block;
+    font-style: normal;
+    position: relative;
+    vertical-align: middle;
+    font-size: 25px;
+}
+.views {
+    margin: auto;
+    max-width: 1297px;
+    }
+@media all and (min-width:900px){
+	.list-block {
+    font-size: 30px;
+    font-weight: 200;
+}
+.button {      font-size: 26px;
+    font-weight: 300;
+    padding: 0;
+    }
+    .list-block {
+    float: left;
+    font-size: 30px;
+    font-weight: 200;
+    width: 50%;
+}
+.button {
+    margin: auto;
+    width: 45%;
+}
+}

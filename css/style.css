@@ -1,0 +1,18 @@
+#forecast_embed {
+	position: relative;
+	top:-40px;
+}
+h4 {
+	font-weight: lighter !important;
+	font-size: 35px;
+}
+i {
+	margin-right: 15px;
+	float: right
+}
+.main {
+margin:auto}
+body {
+	padding: 0px !important;
+	margin-top: 40px;
+}
