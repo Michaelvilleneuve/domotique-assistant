@@ -45,8 +45,7 @@ Voici les différentes fonctionnalités de l'assistant ainsi que les besoins log
 
 Grâce à des prises télécommandés. Vous pourrez allumer et éteindre vos prises, lumières, appareils électriques à distance. La fréquence utilisée par l'émetteur relié au raspberry Pi vous permettra de contrôler autre chose que des prises télécommandées. Avec un peu de volonté vous pourrez parvenir à contrôler n'importe quel appareil fonctionnant sur cette fréquence standard pour la domotique (portail télécommandé, garage, volets roulants, stations météo, etc).
 
-Requis :  - prises télécommandées (http://www.amazon.fr/dp/B00IVIK8XW/ref=sr_ph?ie=UTF8&qid=1427402808&sr=1&keywords=prises+télécommandées)
-	- Émetteur 433mhz (433mhz http://www.amazon.fr/Neuftech®-433mhz-transmetteur-récepteur-Arduino/dp/B00NIBI7IK/ref=sr_1_1?ie=UTF8&qid=1427402900&sr=8-1&keywords=emetteur+433mhz)
+- Requis : prises télécommandées (http://www.amazon.fr/dp/B00IVIK8XW/ref=sr_ph?ie=UTF8&qid=1427402808&sr=1&keywords=prises+télécommandées), émetteur 433mhz (433mhz http://www.amazon.fr/Neuftech®-433mhz-transmetteur-récepteur-Arduino/dp/B00NIBI7IK/ref=sr_1_1?ie=UTF8&qid=1427402900&sr=8-1&keywords=emetteur+433mhz)
 
 ### Contrôle de la musique
 

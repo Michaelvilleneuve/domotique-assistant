@@ -15,29 +15,29 @@ class Controller {
 	private $val;
 	
 	public function indexAction() {
-		$lampe1 = fopen('lampe1.txt', 'r+');
+		$lampe1 = fopen('datas/lampe1.txt', 'r+');
 		$lampe1= fgets($lampe1);
 		if($lampe1=='1'){$lampe1='checked';}else{$lampe1='';}
-		$lampe2 = fopen('lampe2.txt', 'r+');
+		$lampe2 = fopen('datas/lampe2.txt', 'r+');
 		$lampe2= fgets($lampe2);
 		if($lampe2=='1'){$lampe2='checked';}else{$lampe2='';}
-		$lampe3 = fopen('lampe3.txt', 'r+');
+		$lampe3 = fopen('datas/lampe3.txt', 'r+');
 		$lampe3= fgets($lampe3);
 		if($lampe3=='1'){$lampe3='checked';}else{$lampe3='';}
-		$lampe4 = fopen('lampe4.txt', 'r+');
+		$lampe4 = fopen('datas/lampe4.txt', 'r+');
 		$lampe4= fgets($lampe4);
 		if($lampe4=='1'){$lampe4='checked';}else{$lampe4='';}
-		$decodeur = fopen('decodeur.txt', 'r+');
+		$decodeur = fopen('datas/decodeur.txt', 'r+');
 		$decodeur = fgets($decodeur);
 		if($decodeur=='1'){$decodeur='checked';}else{$decodeur='';}
 		if($this->capteurtemp == true){
 		// Temperature 
-		$temperature = file_get_contents('temperature.txt')."°C"; 
+		$temperature = file_get_contents('datas/temperature.txt')."°C"; 
 		$temperature = str_replace('.000', '', $temperature);
 		}
 		if($this->capteurtemp == true){
 		// Humidité 
-		$humidite = file_get_contents('humidite.txt')."%"; 
+		$humidite = file_get_contents('datas/humidite.txt')."%"; 
 		$humidite = str_replace('.000', '', $humidite);
 		}
 		include('Header.php');
@@ -98,7 +98,7 @@ class Controller {
 	/**********************************************************************/
 	private function changerPrise($numero,$nom,$val,$code){
 		exec('sudo /home/pi/rcswitch-pi/./send '.$code.' '.$numero.' '.$val.'');
-		$lampe = fopen(''.$nom.'.txt', 'r+');
+		$lampe = fopen('datas/'.$nom.'.txt', 'r+');
 		if(!empty($nom)){
 		fseek($lampe, 0);
 		fputs($lampe, $val); 
@@ -113,7 +113,7 @@ class Controller {
 					// Temperature 
 				if (isset($_GET['temp'])){
 					$temp = $_GET['temp'];
-					$temperatureprec = file_get_contents('temperature.txt');
+					$temperatureprec = file_get_contents('datas/temperature.txt');
 					$difference = $temp-$temperatureprec;
 					$min = -3;
 					if($difference<3 && $difference>$min){
@@ -122,7 +122,7 @@ class Controller {
 					fseek($file, 0);
 					fputs($file, $temp); 
 					fclose($file);
-					$statut= file_get_contents('auto-chauffage.txt');
+					$statut= file_get_contents('datas/auto-chauffage.txt');
 						if($statut == 1){
 								if($temp<19){
 									exec('curl http://'.$this->iprasp.'/index.php?q=ajax\&action=lampe4\&val=1  > /dev/null 2>&1');
@@ -237,25 +237,25 @@ class Controller {
 			break;
 			/* Réveil auto */
 			case 'reveil':
-				$reveil = fopen('auto-reveil.txt', 'r+');
+				$reveil = fopen('datas/auto-reveil.txt', 'r+');
 				fseek($reveil, 0);
 				fputs($reveil, $this->val); 
 				fclose($reveil);
 			break;
 			/* Chauffage auto */
 			case 'chauffage':
-				$chauffage = fopen('auto-chauffage.txt', 'r+');
+				$chauffage = fopen('datas/auto-chauffage.txt', 'r+');
 				fseek($chauffage, 0);
 				fputs($chauffage, $this->val); 
 				fclose($chauffage);
 			break;
 			/* DÉTECTION */
 			case 'mouvement':
-				$contenu=file_get_contents('verouillage.txt'); 
+				$contenu=file_get_contents('datas/verouillage.txt'); 
 				if($contenu == 1){
 				$sms=new smsenvoi();
 				$sms->sendSMS('+33'.$this->numsms.'','Alerte déclenchée, mouvement détecté dans la maison.','PREMIUM','Gladys');
-				$this->direPhrase('Alarme enclencher. Appel vocal en cours vers le commissariat de Bordeaux.');
+				$this->direPhrase('Alarme enclencher. Appel vocal en cours vers le commissariat.');
 				}
 			break;
 			// Affichage direct caméra
@@ -264,12 +264,12 @@ class Controller {
 			break;
 			// Affichage stats
 			case 'stats':
-				$verrouillage = file_get_contents('verouillage.txt');
+				$verrouillage = file_get_contents('datas/verouillage.txt');
 				if($verrouillage=='1'){$verrouillage='checked';}else{$verrouillage='';}
-				$chaufauto = fopen('auto-chauffage.txt', 'r+');
+				$chaufauto = fopen('datas/auto-chauffage.txt', 'r+');
 				$chaufauto= fgets($chaufauto);
 				if($chaufauto=='1'){$chaufauto='checked';}else{$chaufauto='';}
-				$reveilauto = fopen('auto-reveil.txt', 'r+');
+				$reveilauto = fopen('datas/auto-reveil.txt', 'r+');
 				$reveilauto= fgets($reveilauto);
 				if($reveilauto=='1'){$reveilauto='checked';}else{$reveilauto='';}
 				$nb=[];
