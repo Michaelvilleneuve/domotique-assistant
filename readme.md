@@ -5,37 +5,6 @@ L'assistant domotique fonctionne sur un serveur Apache2 avec PHP5.
 Le tout est prévu pour fonctionner sur un raspberry PI sous Raspbian mais fonctionnera sur n'importe quel appareil sous Debian, et avec quelques adaptations sur d'autres distributions Linux.
 L'ensemble ne nécessite pas de base de données dans la mesure ou les données sont stockées dans les fichiers *.txt.
 
-Les prérequis de l'installation sont les suivants : 
-
-	# APACHE 2	
-	sudo apt-get install apache2
-	
-	# PHP5
-	sudo apt-get install php5 libapache2-mod-php5
-	
-	# CURL
-	sudo apt-get php5-curl
-	
-	# WWW-DATA doit avoir les privilèges root (pour les commandes unix avec 'exec') --> attention aux permissions que vous offrez à l'utilisateur WWW-DATA selon votre configuration réseau
-
-	# ALSAMIXER Gestion du son (volume)
-	sudo apt-get install alsa-utils
-	
-	# MPG123, Utilisé pour lire les MP3 retournés par Google ainsi que pour la Radio
-	sudo apt-get install mpg123
-	
-	# MOCP, Gestion du lecteur média
-	sudo apt-get update && sudo apt-get install moc moc-ffmpeg-plugin
-	
-	# WiringPi, gestion des GPIOS
-	git clone git://git.drogon.net/wiringPi
-	
-	# RCSwitch, gestion d'un kit émetteur récepteur 433,92mhz
-	git clone https://github.com/r10r/rcswitch-pi
-
-	# Wake On Lan, réveil d'un PC à distance
-	sudo apt-get install wakeonlan
-
 Fonctionnalités
 ---------------
 
@@ -54,21 +23,21 @@ Lors d'un appui sur play, le lecteur intelligent ira automatiquement chercher da
 
 Pour aller encore plus loin dans l'integration vous pouvez créer une borne airplay grâce à Shairport. 
 
-Requis : Des enceintes branchées sur le raspberry Pi, Alsamixer, MOCP, et une playlist si vous souhaitez jouer vos propres musiques.
+- Requis : Des enceintes branchées sur le raspberry Pi, Alsamixer, MOCP, et une playlist si vous souhaitez jouer vos propres musiques.
 
 ### Contrôle du réveil
 
 Vous pourrez créer votre propre réveil grâce au dossier crontab. Pour cela, définissez une tâche CRON ('crontab -e'), et paramétrez l'heure et la récurrence du réveil. Par défaut, l'assistant ne vous réveillera pas le week end.
 Le scénario intégré est le suivant : L'assistante vous dit `Bonjour Monsieur, nous somme le $date, il est $heure, la température exterieure est de $degrés, le temps est $météo.`, l'assitante allume ensuite une lampe de votre choix et joue doucement Fip radio.
 
-Requis : Tâche Cron programmée
+- Requis : Tâche Cron programmée
 
 ### Alerte SMS
 
  Si l'alarme est déclenchée, alerte en cas de température trop élevée, etc : L'assistant peut vous envoyer des SMS afin de vous avertir de différents scénarios (température trop élevée, alarme, rappel temporaire paiement des factures, etc).
 Modifiez le fichier /smsenvoi/smsenvoi.config.php afin de paramétrer vos identifiants.
 
-Requis : Avoir un compte avec du crédit SMS sur SMSENVOI.com et récupérer sa clé API dans ses paramètres. 
+- Requis : Avoir un compte avec du crédit SMS sur SMSENVOI.com et récupérer sa clé API dans ses paramètres. 
 
 ### Assistant personnalisé
 
@@ -141,13 +110,76 @@ L'API d'envoi de SMS peut-être activée en renseignant vos clé API dans le fic
 Les fichiers *.txt servent à stocker les données des capteurs, mais également à stocker la configuration (gestion automatisée du chauffage, du réveil, etc.).
 
 
+Installation
+============
+
+Les prérequis de l'installation sont les suivants : 
+
+	# APACHE 2	
+	sudo apt-get install apache2
+	
+	# PHP5
+	sudo apt-get install php5 libapache2-mod-php5
+	
+	# CURL
+	sudo apt-get php5-curl
+	
+	# WWW-DATA doit avoir les privilèges root (pour les commandes unix avec 'exec') --> attention aux permissions que vous offrez à l'utilisateur WWW-DATA selon votre configuration réseau
+
+	# ALSAMIXER Gestion du son (volume)
+	sudo apt-get install alsa-utils
+	
+	# MPG123, Utilisé pour lire les MP3 retournés par Google ainsi que pour la Radio
+	sudo apt-get install mpg123
+	
+	# MOCP, Gestion du lecteur média
+	sudo apt-get update && sudo apt-get install moc moc-ffmpeg-plugin
+	
+	# WiringPi, gestion des GPIOS
+	git clone git://git.drogon.net/wiringPi
+	
+	# RCSwitch, gestion d'un kit émetteur récepteur 433,92mhz
+	git clone https://github.com/r10r/rcswitch-pi
+
+	# Wake On Lan, réveil d'un PC à distance
+	sudo apt-get install wakeonlan
+
+	# Avoir une IP fixe
+
+Une fois ceci-fait, deux solutions s'offrent à vous pour télécharger l'assistant vers votre serveur.
+
+### En SSH
 
 
+	# Placez-vous dans le dossier racine du serveur Apache (par défaut /var/www
+	cd /var/www 
 
+	# installez Git si ce n'est pas déjà fait 
+	sudo apt-get install git
 
+	# Clonez ce repository
+	git clone https://github.com/Michaelvilleneuve/domotique-assistant
 
+### Via FTP
 
+Téléchargez le zip et placez les fichiers à la racine de votre serveur web.
 
+Accéder à l'administration depuis l'éxterieur
+---------------------------------------------
+
+Pour accéder à l'administration de votre domotique depuis l'exterieur, vous devez ouvrir le port 80 de votre box et le diriger vers l'adresse IP du serveur.
+Ensuite, tapez dans votre navigateur l'adresse IP publique de votre box et vous accéderez à votre assistant.
+
+### Précaution sécurité
+
+L'utilisation de l'assistant demande d'offrir à l'utilisateur WWW-DATA des privilèges élevés sur votre serveur. Faite donc attention sécuriser votre réseau ainsi que votre serveur.
+
+D'autre part, la configuration de base ne requiert pas d'authentification. Il serait préférable de mettre en place un tel système dans le cadre d'une utilisation WAN.
+
+Utilisation comme application Smartphone
+----------------------------------------
+
+Ouvrez la page web et faites "ajouter à l'écran d'accueil", vous la retrouverez sous forme d'application.
 
 
 
