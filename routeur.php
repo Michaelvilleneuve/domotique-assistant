@@ -12,11 +12,10 @@
 require_once 'controller.php';
 $url = (isset($_GET['q']) AND !empty($_GET['q'])) ? $_GET['q'] : 'index';
 $controller = new Controller($url);
-$routes = [
+$routes = array(
 	'index',
 	'ajax',
-	'cron',
-];
+);
 /** Auto utilisé pour les requètes envoyées par une arduino **/
 if(empty($_GET['auto'])){
 	if (in_array($url, $routes)) {

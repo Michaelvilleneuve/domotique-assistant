@@ -18,7 +18,7 @@ class Controller {
 	// Adresse IP du raspberrypi
 	private $iprasp = '192.168.X.X';
 	// Adresse Mac du PC à réveiller
-	private $adressemac = 'XX:XX:XX:XX:XX:XX'
+	private $adressemac = 'XX:XX:XX:XX:XX:XX';
 	// Ip du PC à réveiller
 	private $ippc = '192.168.X.X';
 	// Numéro SMS sans le 0
@@ -287,7 +287,7 @@ class Controller {
 				$reveilauto = fopen('datas/auto-reveil.txt', 'r+');
 				$reveilauto= fgets($reveilauto);
 				if($reveilauto=='1'){$reveilauto='checked';}else{$reveilauto='';}
-				$nb=[];
+				$nb=array();
 				$nb['lampe1'] = 	$this->afficherUtilisation('lampe1');
 				$nb['lampe2'] = 	$this->afficherUtilisation('lampe2');
 				$nb['lampe3'] = 	$this->afficherUtilisation('lampe3');
