@@ -148,7 +148,7 @@ Les prérequis de l'installation sont les suivants :
 	sudo apt-get install php5 libapache2-mod-php5
 	
 	# CURL
-	sudo apt-get php5-curl
+	sudo apt-get install curl
 	
 	# Ajoutez WWW-DATA aux sudoers
 
