@@ -1,21 +1,24 @@
 Assistant Domotique
 =====================
 
+##### En quelques mots
+
 Assistant domotique est une application très légère de gestion Domotique. En quelques minutes, vous pourrez contrôler l'ensemble de votre domotique.
 Pensé pour les développeur, l'assistant est très facile à maintenir et à faire évoluer. Vous pourrez en quelques lignes rajouter des fonctionnalités, des lampes, des appareils à contrôler.
 Grâce aux tâches Cron, vous pourrez programmer facilement des scénarios : Se faire réveiller le matin par la météo et la radio, se faire rappeller par SMS des régler telle ou telle facture, allumer ou éteindre un appareil électrique à un moment donné, etc.
 
 Plusieurs scénarios sont préintégrés à l'application. À vous d'ajouter des tâches pour régler l'heure et le type de rappel.
 
+##### Son avantage
+
 L'avantage principal de cette solution Domotique en comparaison avec des solutions intégrées est son coût.
 En effet, le coût total du matériel utilisé pour gérer les différentes fonctionnalités est inférieur à 70 euros, contre plus de 300 euros pour une box domotique beaucoup moins évolutive et complète.
+
+##### Pour commencer
 
 L'assistant requiert pour fonctionner parfaitement un Raspberry PI, en version B ou B+.
 Afin de pousser encore plus loin l'intégration domotique et éléctronique, vous aurez certainement envie de faire l'acquisition d'une Arduino et de quelques capteurs (mouvement, température, humidité, etc) afin d'automatiser un certain nombre de tâches supplémentaires. Un paragraphe est dédié en fin de documentation sur l'intégration d'arduinos dans le processus.
 
-L'assistant domotique fonctionne sur un serveur Apache2 avec PHP5.
-Le tout est prévu pour fonctionner sur un raspberry PI sous Raspbian mais fonctionnera sur n'importe quel appareil sous Debian, et avec quelques adaptations sur d'autres distributions Linux.
-Par défaut, l'ensemble ne nécessite pas de base de données dans la mesure ou les quelques données sont stockées dans les fichiers *.txt. Libre à vous d'en rajouter une si besoin.
 
 Démo live de l'app
 ---------------
@@ -221,7 +224,7 @@ L'Arduino, branchée avec un Ethernet Shield par exemple, pourra de son côté e
 
 Voici un exemple de requête HTTP pouvant être envoyée par une Arduino et comprise par le raspberry pi : 
 
-	```c
+
 	void envoyerrequete(String page, String action, int val) {
 	  DHT.read11(dht_dpin);
 	  float tempe = DHT.temperature;
@@ -239,7 +242,7 @@ Voici un exemple de requête HTTP pouvant être envoyée par une Arduino et comp
 	    Serial.println("Echec connexion");
 	  }
 	}
-	```
+
 
 Cette fonction prend en paramètre la page à questionner (en général index), l'action à effectuer (le case du switch à activer), et dans le cas des prises télécommandées, la valeur que l'on souhaite envoyer (0 pour OFF, 1 pour ON).
 
