@@ -247,7 +247,11 @@ Voici un exemple de requête HTTP pouvant être envoyée par une Arduino et comp
 Cette fonction prend en paramètre la page à questionner (en général index), l'action à effectuer (le case du switch à activer), et dans le cas des prises télécommandées, la valeur que l'on souhaite envoyer (0 pour OFF, 1 pour ON).
 
 
+### Effectuer les requêtes avec Node.js
 
+Effectuer les actions avec un serveur Node.js vous permettrait de gagner grandement en rapidité quant à l'éxecution des commandes d'allumage des prises, etc.
+
+Cela permettrait une meilleure gestion du temps réel par l'évennementiel.
 
 
 
