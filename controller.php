@@ -13,8 +13,10 @@ class Controller {
 	// Utilisation d'un capteur de température
 	private $capteurtemp = true;
 	private $val;
+	private $sms;
 	
 	public function indexAction() {
+		// On regarde l'état des différentes prises
 		$lampe1 = fopen('datas/lampe1.txt', 'r+');
 		$lampe1= fgets($lampe1);
 		if($lampe1=='1'){$lampe1='checked';}else{$lampe1='';}
@@ -40,6 +42,7 @@ class Controller {
 		$humidite = file_get_contents('datas/humidite.txt')."%"; 
 		$humidite = str_replace('.000', '', $humidite);
 		}
+		// On passe le tout au layout et à la vue initiale
 		include('Header.php');
 		include('index-view.php');
 		include('Footer.php');
@@ -112,6 +115,7 @@ class Controller {
 				if($this->capteurtemp == true){
 					// Temperature 
 				if (isset($_GET['temp'])){
+					/* On écarte les erreurs (température supérieure à 3 degrès par rapport à la mesure précédente) */
 					$temp = $_GET['temp'];
 					$temperatureprec = file_get_contents('datas/temperature.txt');
 					$difference = $temp-$temperatureprec;
@@ -128,15 +132,14 @@ class Controller {
 									exec('curl http://'.$this->iprasp.'/index.php?q=ajax\&action=lampe4\&val=1  > /dev/null 2>&1');
 								}
 								elseif($temp>=20){
-									$lampe4= file_get_contents('lampe1.txt');
+									$lampe4= file_get_contents('datas/lampe1.txt');
 											if($lampe4==1){
 											exec('curl http://'.$this->iprasp.'/index.php?q=ajax\&action=lampe4\&val=0  > /dev/null 2>&1');
 											}
 								}
 						}
 						if($temp>32){
-							$sms=new smsenvoi();
-							$sms->sendSMS('+33'.$this->numsms.'','Température anormale détectée dans la maison.','PREMIUM','Gladys');
+							$this->sms->sendSMS('+33'.$this->numsms.'','Température anormale détectée dans la maison.','PREMIUM','Gladys');
 						}
 					/////////
 					}
@@ -203,12 +206,12 @@ class Controller {
 			break;
 			/* ALLUMAGE, EXCTINCTION PC */
 			case 'pc':
-				if($_POST['val']==1) {exec('wakeonlan '.$adressemac.'');
+				if($_POST['val']==1) {exec('wakeonlan '.$this->adressemac.'');
 				$this->augmenterVisite('pc');
-				$this->direPhrase('demarage.');}
+				$this->direPhrase('demarrage.');}
 				else {
 				exec('sudo curl http://'.$this->ippc.':7760/poweroff > /dev/null 2>&1');
-				$this->direPhrase('Le pc va saiteindre');
+				$this->direPhrase('Extinction');
 				}
 			break;
 			/* Décodeur */
@@ -253,9 +256,8 @@ class Controller {
 			case 'mouvement':
 				$contenu=file_get_contents('datas/verouillage.txt'); 
 				if($contenu == 1){
-				$sms=new smsenvoi();
-				$sms->sendSMS('+33'.$this->numsms.'','Alerte déclenchée, mouvement détecté dans la maison.','PREMIUM','Gladys');
-				$this->direPhrase('Alarme enclencher. Appel vocal en cours vers le commissariat.');
+				$this->sms->sendSMS('+33'.$this->numsms.'','Alerte déclenchée, mouvement détecté dans la maison.','PREMIUM','Gladys');
+				$this->direPhrase('Alarme. Appel vocal en cours vers le commissariat.');
 				}
 			break;
 			// Affichage direct caméra
@@ -291,18 +293,18 @@ class Controller {
 					$pc = exec('ping -c 1 -W 1 '.$this->ippc.'');
 					if ($pc == "") {
 						echo '<input type="checkbox" id="pc">
-             <div class="checkbox"></div>
-             <script>$("#pc").change(function() {
-	post(\'pc\');
-});</script>
-             ';
+						             <div class="checkbox"></div>
+						             <script>$("#pc").change(function() {
+							post(\'pc\');
+						});</script>
+						             ';
 						} else {
 							echo '<input type="checkbox" id="pc" checked>
-             <div class="checkbox"></div>
-             <script>$("#pc").change(function() {
-	post(\'pc\');
-});</script>
-             ';
+						             <div class="checkbox"></div>
+						             <script>$("#pc").change(function() {
+							post(\'pc\');
+						});</script>
+						             ';
 							}
 			break;
 			/* VUE GLADYS */
@@ -312,6 +314,7 @@ class Controller {
 		}
 	}
 	public function __construct(){
+		$this->sms=new smsenvoi();
 		if(isset($_POST['val'])){
 			$this->val=$_POST['val'];
 		}
