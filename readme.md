@@ -1,9 +1,32 @@
 Assistant Domotique
 =====================
 
+Assistant domotique est une application très légère de gestion Domotique. En quelques minutes, vous pourrez contrôler l'ensemble de votre domotique.
+Pensé pour les développeur, l'assistant est très facile à maintenir et à faire évoluer. Vous pourrez en quelques lignes rajouter des fonctionnalités, des lampes, des appareils à contrôler.
+Grâce aux tâches Cron, vous pourrez programmer facilement des scénarios : Se faire réveiller le matin par la météo et la radio, se faire rappeller par SMS des régler telle ou telle facture, allumer ou éteindre un appareil électrique à un moment donné, etc.
+
+Plusieurs scénarios sont préintégrés à l'application. À vous d'ajouter des tâches pour régler l'heure et le type de rappel.
+
+L'avantage principal de cette solution Domotique en comparaison avec des solutions intégrées est son coût.
+En effet, le coût total du matériel utilisé pour gérer les différentes fonctionnalités est inférieur à 70 euros, contre plus de 300 euros pour une box domotique beaucoup moins évolutive et complète.
+
+L'assistant requiert pour fonctionner parfaitement un Raspberry PI, en version B ou B+.
+Afin de pousser encore plus loin l'intégration domotique et éléctronique, vous aurez certainement envie de faire l'acquisition d'une Arduino et de quelques capteurs (mouvement, température, humidité, etc) afin d'automatiser un certain nombre de tâches supplémentaires. Un paragraphe est dédié en fin de documentation sur l'intégration d'arduinos dans le processus.
+
 L'assistant domotique fonctionne sur un serveur Apache2 avec PHP5.
 Le tout est prévu pour fonctionner sur un raspberry PI sous Raspbian mais fonctionnera sur n'importe quel appareil sous Debian, et avec quelques adaptations sur d'autres distributions Linux.
-L'ensemble ne nécessite pas de base de données dans la mesure ou les données sont stockées dans les fichiers *.txt.
+Par défaut, l'ensemble ne nécessite pas de base de données dans la mesure ou les quelques données sont stockées dans les fichiers *.txt. Libre à vous d'en rajouter une si besoin.
+
+Démo live de l'app
+---------------
+
+http://domotique.michaelvilleneuve.fr
+
+Vidéo de l'app en fonctionnement terrain
+----------------------------------------
+
+À venir
+
 
 Fonctionnalités
 ---------------
@@ -14,7 +37,7 @@ Voici les différentes fonctionnalités de l'assistant ainsi que les besoins log
 
 Grâce à des prises télécommandés. Vous pourrez allumer et éteindre vos prises, lumières, appareils électriques à distance. La fréquence utilisée par l'émetteur relié au raspberry Pi vous permettra de contrôler autre chose que des prises télécommandées. Avec un peu de volonté vous pourrez parvenir à contrôler n'importe quel appareil fonctionnant sur cette fréquence standard pour la domotique (portail télécommandé, garage, volets roulants, stations météo, etc).
 
-- Requis : prises télécommandées (http://www.amazon.fr/dp/B00IVIK8XW/ref=sr_ph?ie=UTF8&qid=1427402808&sr=1&keywords=prises+télécommandées), émetteur 433mhz (433mhz http://www.amazon.fr/Neuftech®-433mhz-transmetteur-récepteur-Arduino/dp/B00NIBI7IK/ref=sr_1_1?ie=UTF8&qid=1427402900&sr=8-1&keywords=emetteur+433mhz)
+- Requis : prises télécommandées (http://www.amazon.fr/dp/B00IVIK8XW/ref=sr_ph?ie=UTF8&qid=1427402808&sr=1&keywords=prises+télécommandées), émetteur 433mhz (http://www.amazon.fr/Neuftech®-433mhz-transmetteur-récepteur-Arduino/dp/B00NIBI7IK/ref=sr_1_1?ie=UTF8&qid=1427402900&sr=8-1&keywords=emetteur+433mhz) 
 
 ### Contrôle de la musique
 
@@ -124,7 +147,7 @@ Les prérequis de l'installation sont les suivants :
 	# CURL
 	sudo apt-get php5-curl
 	
-	# WWW-DATA doit avoir les privilèges root (pour les commandes unix avec 'exec') --> attention aux permissions que vous offrez à l'utilisateur WWW-DATA selon votre configuration réseau
+	# Ajoutez WWW-DATA aux sudoers
 
 	# ALSAMIXER Gestion du son (volume)
 	sudo apt-get install alsa-utils
@@ -172,19 +195,53 @@ Ensuite, tapez dans votre navigateur l'adresse IP publique de votre box et vous 
 
 ### Précaution sécurité
 
-L'utilisation de l'assistant demande d'offrir à l'utilisateur WWW-DATA des privilèges élevés sur votre serveur. Faite donc attention sécuriser votre réseau ainsi que votre serveur.
+L'utilisation de l'assistant demande d'offrir à l'utilisateur WWW-DATA des privilèges élevés sur votre serveur. Faite donc attention à bien sécuriser votre réseau ainsi que votre serveur.
 
-D'autre part, la configuration de base ne requiert pas d'authentification. Il serait préférable de mettre en place un tel système dans le cadre d'une utilisation WAN.
+La configuration de base ne requiert pas d'authentification. Il est essentiel de mettre en place un tel système afin de restreindre l'accès à l'application.
 
 Utilisation comme application Smartphone
 ----------------------------------------
 
 Ouvrez la page web et faites "ajouter à l'écran d'accueil", vous la retrouverez sous forme d'application.
 
+Améliorer votre assistant
+-------------------------
 
+Vous vous en doutez, par défaut l'assistant permet de gérer des cas simple d'utilisation avec simplement un raspberry pi. 
+Pour plus d'intégration éléctronique, et donc de scénarios, vous pouvez facilement ajouter une ou plusieurs Arduino et les faire intéragir avec votre système.
 
+### Ajouter une Arduino
 
+Afin d'étendre les capacités de notre assistant, vous pouvez ajouter une arduino, qui sera utiliser pour toutes les actions électroniques. 
 
+Le Raspberry PI sera ainsi dédié aux processus de haut niveau (gestion du serveur web, requêtes avec les API externes, gestion de la musique, réveil, etc).
+
+L'Arduino, branchée avec un Ethernet Shield par exemple, pourra de son côté effectuer des requêtes pour envoyer des informations au Raspberry PI. 
+À travers ces requêtes, vous pourrez communiquer l'état de différents capteurs par exemple. Cela servira pour la gestion de l'alarme de maison, pour la température, l'écoute de signaux 433mhz, etc.
+
+Voici un exemple de requête HTTP pouvant être envoyée par une Arduino et comprise par le raspberry pi : 
+
+	```c
+	void envoyerrequete(String page, String action, int val) {
+	  DHT.read11(dht_dpin);
+	  float tempe = DHT.temperature;
+	  float hum = DHT.humidity;
+	  client.stop();
+	  if (client.connect(server, 80)) {
+	    Serial.println("connexion...");
+	    client.println("GET /"+ page +".php?auto=a&q=ajax&action="+ action+"&temp="+tempe+"&hum="+hum+"&val="+val+" HTTP/1.1");
+	    client.println("Host: 192.168.1.7");
+	    client.println("User-Agent: arduino-ethernet");
+	    client.println("Connection: close");
+	    client.println();
+	  }
+	  else {
+	    Serial.println("Echec connexion");
+	  }
+	}
+	```
+
+Cette fonction prend en paramètre la page à questionner (en général index), l'action à effectuer (le case du switch à activer), et dans le cas des prises télécommandées, la valeur que l'on souhaite envoyer (0 pour OFF, 1 pour ON).
 
 
 
