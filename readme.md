@@ -251,7 +251,7 @@ Cette fonction prend en paramètre la page à questionner (en général index), 
 
 Effectuer les actions avec un serveur Node.js vous permettrait de gagner grandement en rapidité quant à l'éxecution des commandes d'allumage des prises, etc.
 
-Cela permettrait une meilleure gestion du temps réel par l'évennementiel.
+Cela permettrait une meilleure gestion du temps réel par l'événementiel.
 
 
 
