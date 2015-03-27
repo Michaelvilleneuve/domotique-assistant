@@ -233,7 +233,7 @@ Voici un exemple de requête HTTP pouvant être envoyée par une Arduino et comp
 	  if (client.connect(server, 80)) {
 	    Serial.println("connexion...");
 	    client.println("GET /"+ page +".php?auto=a&q=ajax&action="+ action+"&temp="+tempe+"&hum="+hum+"&val="+val+" HTTP/1.1");
-	    client.println("Host: 192.168.1.7");
+	    client.println("Host: 192.168.X.X");
 	    client.println("User-Agent: arduino-ethernet");
 	    client.println("Connection: close");
 	    client.println();
