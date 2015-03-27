@@ -17,25 +17,5 @@ i.stats {
 }
 .views {
     margin: auto;
-    max-width: 1297px;
-    }
-@media all and (min-width:900px){
-	.list-block {
-    font-size: 30px;
-    font-weight: 200;
-}
-.button {      font-size: 26px;
-    font-weight: 300;
-    padding: 0;
-    }
-    .list-block {
-    float: left;
-    font-size: 30px;
-    font-weight: 200;
-    width: 50%;
-}
-.button {
-    margin: auto;
-    width: 45%;
-}
+    max-width: 700px;
 }
