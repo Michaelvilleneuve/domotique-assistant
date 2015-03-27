@@ -1,3 +1,15 @@
+<?php 
+/*
+* Copyright 2015 Michaël Villeneuve
+* 
+* Header.php 
+*
+* Layout
+* Ce fichier correspond au Header de l'application.
+* Il contient l'appel aux feuilles de styles, aux balises meta, etc
+*
+*/
+?> 
 <!DOCTYPE html>
 <html>
   <head>

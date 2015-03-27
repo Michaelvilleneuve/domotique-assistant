@@ -1,10 +1,19 @@
 <?php
+/*
+* Copyright 2015 Michaël Villeneuve
+* 
+* Routeur.php 
+*
+* Routeur
+* Ce fichier permet le routage des requêtes entrantes dans l'assistant. 
+* Vous pouvez ainsi facilement ajouter des routes dans le tableau $routes.
+*
+*/ 
 require_once 'controller.php';
 $url = (isset($_GET['q']) AND !empty($_GET['q'])) ? $_GET['q'] : 'index';
 $controller = new Controller($url);
 $routes = [
 	'index',
-	'wol',
 	'ajax',
 	'cron',
 ];

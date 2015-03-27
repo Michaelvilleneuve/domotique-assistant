@@ -1,4 +1,17 @@
 <?php 
+/*
+* Copyright 2015 Michaël Villeneuve
+* 
+* Controller.php 
+*
+* Ce fichier controlle l'ensemble des fonctionnalités de l'assistant.
+* Il permet aussi la configuration globale via les attributs privés du controlleur.
+*
+* La méthode indexAction est appellée au lancement du site pour afficher le layout et la première vue.
+* Les autres vues sont appellées en Ajax via la méthode ajaxAction et les différents cases du switch
+*
+*/
+
 include_once("smsenvoi/smsenvoi.php");
 
 class Controller {	

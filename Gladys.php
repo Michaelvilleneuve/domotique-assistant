@@ -1,4 +1,14 @@
 <?php 
+/*
+* Copyright 2015 Michaël Villeneuve
+* 
+* Gladys.php 
+*
+* Assistant
+* Ce fichier correspond à toutes les fonctionnalitées de l'onglet assistant de l'app
+* Le switch contient la variable postée dans le formulaire. Vous pouvez ainsi facilement rajouter des cas à traiter
+*
+*/ 
 $post = str_replace(' glad', '', $_POST['text']);
 $post = str_replace(' Glad', '', $post);
 $post = str_replace(' Glad ', '', $post);
