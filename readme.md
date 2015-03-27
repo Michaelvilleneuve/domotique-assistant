@@ -4,15 +4,15 @@ Assistant Domotique
 ##### En quelques mots
 
 Assistant domotique est une application très légère de gestion Domotique. En quelques minutes, vous pourrez contrôler l'ensemble de votre domotique.
-Pensé pour les développeur, l'assistant est très facile à maintenir et à faire évoluer. Vous pourrez en quelques lignes rajouter des fonctionnalités, des lampes, des appareils à contrôler.
-Grâce aux tâches Cron, vous pourrez programmer facilement des scénarios : Se faire réveiller le matin par la météo et la radio, se faire rappeller par SMS des régler telle ou telle facture, allumer ou éteindre un appareil électrique à un moment donné, etc.
+Pensé pour les développeurs, l'assistant est très facile à maintenir et à faire évoluer. Vous pourrez en quelques lignes rajouter des fonctionnalités, des lampes, des appareils à contrôler.
+Grâce aux tâches Cron, vous pourrez programmer facilement des scénarios : Se faire réveiller le matin par la météo et la radio, se faire rappeller par SMS de régler ses factures, allumer ou éteindre un appareil électrique à un moment donné, etc.
 
 Plusieurs scénarios sont préintégrés à l'application. À vous d'ajouter des tâches pour régler l'heure et le type de rappel.
 
 ##### Son avantage
 
-L'avantage principal de cette solution Domotique en comparaison avec des solutions intégrées est son coût.
-En effet, le coût total du matériel utilisé pour gérer les différentes fonctionnalités est inférieur à 70 euros, contre plus de 300 euros pour une box domotique beaucoup moins évolutive et complète.
+L'avantage principal de cette solution Domotique en comparaison avec des solutions intégrées est son coût et sa rapidité de mise en place.
+En effet, le coût total du matériel utilisé pour gérer les différentes fonctionnalités est inférieur à 60 euros, contre plus de 300 euros pour une box domotique beaucoup moins évolutive et complète.
 
 ##### Pour commencer
 
@@ -87,7 +87,7 @@ La gestion du chauffage est intégrée par défaut si vous avez un chauffage él
 
 ### Serveur Wake On Lan 
 
-Allumage et extinction à distance d'un ordinateur : En configurant votre ordinateur fixe pour le Wake On Lan, vous pourrez réveiller et éteindre votre ordinateur à distance en renseignant son adresse mac.
+Allumage et extinction à distance d'un ordinateur : en configurant votre ordinateur fixe pour le Wake On Lan, vous pourrez réveiller et éteindre votre ordinateur à distance en renseignant son adresse mac et en installant un petit utilitaire sur votre pc.
 Pour vérifier l'état de l'ordinateur vous devrez renseigner son adresse IP (elle doit donc être fixe).
 
 - Requis : Un PC fixe secondaire, WakeOnlan
@@ -95,7 +95,7 @@ Pour vérifier l'état de l'ordinateur vous devrez renseigner son adresse IP (el
 ### Alarme de maison
 
 Couplé à un capteur de mouvement, vous pourrez transformer votre raspberry pi en un système efficace d'alarme. Lorsque vous partez de chez vous, activez le verrouillage et la maison sera automatiquement mise sur alarme.
-Si un mouvement est détécté, une alarme se déclenche et un SMS vous sera automatiquement envoyé.
+Si un mouvement est détécté, une alarme se déclenche et un SMS vous sera automatiquement envoyé pour vous prévenir.
 
 - Requis : Capteur de mouvement, SMSENVOI
 
@@ -117,12 +117,12 @@ Le système de vues se retrouve dans les fichiers ayant la terminaison '-view.ph
 
 Tous les différents onglets de l'application se retrouvent dans ces fichiers. 
 
-L'ensemble des requêtes sont faites en AJAX. Le javascript de chaque vue se trouve à la fin des fichiers de vue. Vous pourrez ainsi facilement ajouter des éléments à controler en quelques lignes de code, en vous basant sur l'existant.
+L'ensemble des requêtes au serveur sont faites en AJAX. Le javascript de chaque vue se trouve à la fin des fichiers de vue. Vous pourrez ainsi facilement ajouter des éléments à controler en quelques lignes de code, en vous basant sur l'existant.
 
 Back-end
 --------
 
-L'assistant est développé sur la base d'une architecture MVC. N'ayant pas souhaité pour l'instant intégrer de base de données, le Model est remplacé par des fichiers servant de stockage, les requêtes vers les fichiers sont effectuées dans le controlleur. 
+L'assistant est développé sur la base d'une architecture MVC. N'ayant pas par défaut de base de données, le Model est remplacé par des fichiers servant de stockage, les requêtes vers les fichiers sont effectuées dans le controlleur. 
 
 L'ensemble des requêtes AJAX atteignent la méthode Ajax. L'action à effectuée est déterminée par le SWITCH action. 
 Afin d'ajouter des inputs à administrer sur le front, vous n'avez ainsi qu'à rajouter un cas dans le switch. La requête appellée via la fonction post() dans la vue sera traitée à cet endroit. 
@@ -131,7 +131,7 @@ Par défaut 1 seul controlleur est mis en place. En fonction de vos besoins vous
 
 Les routes peuvent être administrées via le routeur.
 
-L'API d'envoi de SMS peut-être activée en renseignant vos clé API dans le fichiers /smsenvoi/smsenvoi.config.php
+L'API d'envoi de SMS peut-être activée en renseignant vos clé API dans le fichiers /smsenvoi/smsenvoi.config.php. Vous devez vous créer un compte sur smsenvoi.com.
 
 Les fichiers *.txt servent à stocker les données des capteurs, mais également à stocker la configuration (gestion automatisée du chauffage, du réveil, etc.).
 
