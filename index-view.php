@@ -3,7 +3,7 @@
   <div id="tab1" class="view tab active">
     <div class="navbar">
       <div class="navbar-inner">
-        <div class="center"><?php echo $temperature; ?></div>
+        <div class="center"><?php echo $temperature; ?> <?php echo  $humidite; ?></div>
       </div>
     </div>
     <div class="pages navbar-fixed"> 
@@ -18,9 +18,9 @@
       <div class="pull-to-refresh-arrow"></div>
     </div>
            
-<div class="list-block">
+<div class="list-block" style="margin-top:22px">
   <ul>
-    <!-- Text inputs -->
+    <!-- lampe1 -->
  <li>
       <div class="item-content">
         <div class="item-inner">
@@ -34,7 +34,7 @@
         </div>
       </div>
     </li>
-
+ <!-- lampe2 -->
     <li>
       <div class="item-content">
         <div class="item-inner">
@@ -50,11 +50,11 @@
     </li>
 
  
-    <!-- Select -->
+    <!-- led -->
    <li>
       <div class="item-content">
         <div class="item-inner">
-          <div class="item-title label">LED Tv</div>
+          <div class="item-title label">LED</div>
           <div class="item-input">
             <label class="label-switch">
               <input id="lampe3" class="lampes" type="checkbox" <?php echo $lampe3;?>>
@@ -66,23 +66,7 @@
     </li>
 
  
-    <!-- Date -->
- <li>
-      <div class="item-content">
-        <div class="item-inner">
-          <div class="item-title label">Chauffage</div>
-          <div class="item-input">
-            <label class="label-switch">
-              <input id="lampe4" class="lampes" type="checkbox" <?php echo $lampe4;?>>
-              <div class="checkbox"></div>
-            </label>
-          </div>
-        </div>
-      </div>
-    </li>
-
- 
-    <!-- Switch (Checkbox) -->
+    <!-- pc -->
     <li>
       <div class="item-content">
         <div class="item-inner">
@@ -96,13 +80,40 @@
         </div>
       </div>
     </li>
+   <!-- decodeur -->
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-title label">Décodeur TV</div>
+          <div class="item-input">
+            <label class="label-switch">
+              <input id="decodeur" class="lampes" type="checkbox" <?php echo $decodeur;?>>
+              <div class="checkbox"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </li>
+    <!-- chauffage -->
+   <li>
+        <div class="item-content">
+          <div class="item-inner">
+            <div class="item-title label">Chauffage</div>
+            <div class="item-input">
+              <label class="label-switch">
+                <input id="lampe4" class="lampes" type="checkbox" <?php echo $lampe4;?>>
+                <div class="checkbox"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </li>
   </ul>
 </div>
 <div class="content-block">
-<p><a href="#" id="serveur" onclick="var result = confirm('Es-tu sur ?');if (result) {post('serveur');}" class="button save-storage-data">Rebooter le serveur</a></p>
 <p><a href="#" onclick="post('eteindretout');" id="eteindretout" class="button save-storage-data">Éteindre tout</a></p>
 <p><a href="#" onclick="post('allumertout');" id="allumertout" class="button save-storage-data">Allumer tout</a></p>
-<p><a href="#" onclick="post('verouiller');" id="allumertout" class="button save-storage-data">Vérrouiller</a></p>
+<p><a href="#" onclick="post('verouiller');" id="allumertout" class="button save-storage-data">Verrouiller</a></p>
 </div>
 
 <div class="content-block">   
@@ -187,60 +198,63 @@ var myApp = new Framework7();
 var $$ = Dom7;
 var ptrContent = $$('.pull-to-refresh-content');
 ptrContent.on('refresh', function (e) {
-	document.location.reload(true);
+  document.location.reload(true);
 });
 // Requête ping PC affichage pastille
 $('#pclabel').load('index.php?q=ajax&action=ping');
 // Requete pour tab caméra
 $("#tabcam").click(function(){
-	$('#camera').load('index.php?q=ajax&action=camera');
+  $('#camera').load('index.php?q=ajax&action=camera');
 });
 // Requête pour tab stats
 $("#tabstats").click(function(){
-	$('#stats').load('index.php?q=ajax&action=stats');
+  $('#stats').load('index.php?q=ajax&action=stats');
 });
 // Requête pour tab routeur
 $("#tabroot").click(function(){
-	$('#routeur').load('index.php?q=ajax&action=routeur');
+  $('#routeur').load('index.php?q=ajax&action=routeur');
 });
 // Fonction 
                             function post(id){
-                            	var idpdf = id;
-                            	if ($('#'+id).is(':checked')) {
-                            	var val = "1";
-                            	}
-                            	else {
-	                            	var val = "0";
-                            	}
-	                          $.post( "index.php?q=ajax&action="+id+"", { val: val } );
+                              var idpdf = id;
+                              if ($('#'+id).is(':checked')) {
+                              var val = "1";
+                              }
+                              else {
+                                var val = "0";
+                              }
+                            $.post( "index.php?q=ajax&action="+id+"", { val: val } );
                             }
 $("#eteindretout").click(function(){
-	$('.lampes').attr('checked', false);
+  $('.lampes').attr('checked', false);
 });
 $("#allumertout").click(function(){
-	$('.lampes').attr('checked', true);
+  $('.lampes').attr('checked', true);
 });
 $("#lampe1").change(function() {
-	post('lampe1');
+  post('lampe1');
+});
+$("#decodeur").change(function() {
+  post('decodeur');
 });
 $("#lampe2").change(function() {
-	post('lampe2');
+  post('lampe2');
 });
 $("#lampe3").change(function() {
-	post('lampe3');
+  post('lampe3');
 });
 $("#lampe4").change(function() {
-	post('lampe4');
+  post('lampe4');
 });    
 $("#pc").change(function() {
-	post('pc');
-	setTimeout(function(){
+  post('pc');
+  setTimeout(function(){
     var iframe = document.createElement("IFRAME");
-	iframe.setAttribute("src", 'data:text/plain,');
-	document.documentElement.appendChild(iframe);
-	window.frames[0].window.alert('Allumage en cours, rafraichissement dans 30 secondes.');
-	iframe.parentNode.removeChild(iframe);
-	},100);
+  iframe.setAttribute("src", 'data:text/plain,');
+  document.documentElement.appendChild(iframe);
+  window.frames[0].window.alert('Allumage en cours, rafraichissement dans 30 secondes.');
+  iframe.parentNode.removeChild(iframe);
+  },100);
     setTimeout(function(){
     location.reload() ;
     }, 40000);
