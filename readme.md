@@ -3,15 +3,20 @@ Assistant Domotique
 
 ##### En quelques mots
 
-Assistant domotique est une application très légère de gestion Domotique. En quelques minutes, vous pourrez contrôler l'ensemble de votre domotique.
+Assistant domotique est une application web de gestion Domotique s'installant sur un Raspberry pi. 
+Pensée pour rendre votre maison intelligente, elle vous permettra de centraliser vos appareils multimédia, votre éclairage, votre alarme de maison, pour un coût matériel dérisoire.
+
+Adaptable très facilement, l'application s'intalle sur un raspberry pi en quelques minutes et se contrôle depuis l'adresse IP du serveur, branché à votre box.
+
+Depuis votre smartphone, vous pourrez visualiser en un clin d'oeil les appareils éléctriques de votre maison, faire parler votre raspberry pi, jouer vos playlists, la radio, etc. 
+
+L'assistant, une fois configuré veillera sur votre maison lorsque vous n'êtes pas là, contrôlera la température pour vous, vous réveillera le matin en vous informant de l'actualité et de la méteo. Il comprendra vos habitudes et saura vous aider dans la gestion de votre domotique.
+
 Pensé pour les développeurs, l'assistant est très facile à maintenir et à faire évoluer. Vous pourrez en quelques lignes rajouter des fonctionnalités, des lampes, des appareils à contrôler.
-Grâce aux tâches Cron, vous pourrez programmer facilement des scénarios : Se faire réveiller le matin par la météo et la radio, se faire rappeller par SMS de régler ses factures, allumer ou éteindre un appareil électrique à un moment donné, etc.
 
-Plusieurs scénarios sont préintégrés à l'application. À vous d'ajouter des tâches pour régler l'heure et le type de rappel.
+##### Ses avantages
 
-##### Son avantage
-
-L'avantage principal de cette solution Domotique en comparaison avec des solutions intégrées est son coût et sa rapidité de mise en place.
+Les avantages principaux de cette solution Domotique en comparaison avec des solutions intégrées sont son coût, et sa rapidité de mise en place.
 En effet, le coût total du matériel utilisé pour gérer les différentes fonctionnalités est inférieur à 60 euros, contre plus de 300 euros pour une box domotique beaucoup moins évolutive et complète.
 
 ##### Pour commencer
