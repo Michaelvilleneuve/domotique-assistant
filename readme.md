@@ -4,7 +4,7 @@ Assistant Domotique
 ##### En quelques mots
 
 Assistant domotique est une application web de gestion Domotique s'installant sur un Raspberry pi. 
-Pensée pour rendre votre maison intelligente, elle vous permettra de centraliser vos appareils multimédia, votre éclairage, votre alarme de maison, pour un coût matériel dérisoire.
+Pensée pour rendre votre maison intelligente, elle vous permettra de centraliser vos appareils multimédias, votre éclairage, votre alarme, pour un coût matériel dérisoire.
 
 Adaptable très facilement, l'application s'intalle sur un raspberry pi en quelques minutes et se contrôle depuis l'adresse IP du serveur, branché à votre box.
 
