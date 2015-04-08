@@ -22,7 +22,7 @@
     <!-- Your app title -->
     <title>Domotique</title>
     <!-- Path to Framework7 Library CSS-->
-    <link rel="stylesheet" href="css/framework7.min.css">
+    <link rel="stylesheet" href="css/framework7.min.css?<?php echo(mt_rand(10000000, 99999999)); ?>">
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/framework7.min.js"></script>
     <!-- Path to your app js-->

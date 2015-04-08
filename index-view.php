@@ -198,7 +198,7 @@ var myApp = new Framework7();
 var $$ = Dom7;
 var ptrContent = $$('.pull-to-refresh-content');
 ptrContent.on('refresh', function (e) {
-  document.location.reload(true);
+  top.frames.location.reload();
 });
 // Requête ping PC affichage pastille
 $('#pclabel').load('index.php?q=ajax&action=ping');
