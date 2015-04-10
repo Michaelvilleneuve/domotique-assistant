@@ -113,7 +113,7 @@
 <div class="content-block">
 <p><a href="#" onclick="post('eteindretout');" id="eteindretout" class="button save-storage-data">Éteindre tout</a></p>
 <p><a href="#" onclick="post('allumertout');" id="allumertout" class="button save-storage-data">Allumer tout</a></p>
-<p><a href="#" onclick="post('verouiller');" id="allumertout" class="button save-storage-data">Verrouiller</a></p>
+<p><a href="#" onclick="post('verouiller');" id="verouiller" class="button save-storage-data">Verrouiller</a></p>
 </div>
 
 <div class="content-block">   
@@ -230,6 +230,18 @@ $("#eteindretout").click(function(){
 });
 $("#allumertout").click(function(){
   $('.lampes').attr('checked', true);
+});
+$("#ouvrir").on('click',function() {
+  $(this).text('Ouverture...');
+  setTimeout(function(){
+  $("#ouvrir").text('Ouvrir');
+  },2000);
+});
+$("#verouiller").on('click',function() {
+  $(this).text('Verouillage...');
+  setTimeout(function(){
+  $("#verouiller").text('Verouiller');
+  },2000);
 });
 $("#lampe1").change(function() {
   post('lampe1');
