@@ -166,7 +166,7 @@ class Controller {
 					$this->changerPrise('2','lampe4',1,'10101');	
 					$this->changerPrise('1','lampe4',1,'10101');
 					$this->changerPrise('1','',1,'11100');		
-					$this->direPhrase('ses fait.');
+					$this->direPhrase('C\'est fait.');
 			break;
 			case 'deverrouiller':
 					$deverouillage = fopen('verouillage.txt', 'r+');
@@ -195,11 +195,11 @@ class Controller {
 					$this->changerPrise('2','lampe4',0,'10101');	
 					$this->changerPrise('1','lampe4',0,'10101');
 					$this->changerPrise('1','',0,'11100');		
-					$this->direPhrase('ses fait.');
+					$this->direPhrase('C\'est fait.');
 			break;
 			/* REBOOT SERVEUR */
 			case 'serveur':
-				$this->direPhrase('Le serveur redemarre.');
+				$this->direPhrase('Le serveur redémarre.');
 				$this->ecrireDate('reboot');
 				$this->augmenterVisite('serveur');
 				exec('sudo reboot');

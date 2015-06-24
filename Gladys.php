@@ -157,7 +157,7 @@ switch($post){
 		fputs($lampe4, 1); 
 		fclose($lampe4);
 		$this->augmenterVisite('lampe4');
-		$this->direPhrase('Toutes les lumiaires ont aitai allumer.');
+		$this->direPhrase('Toutes les lumières ont été allumées.');
 	break;
 	
 	case 'Eteins':
@@ -196,7 +196,7 @@ switch($post){
 	break;
 	
 	default:
-		 // $this->direPhrase('desoler, je nez pas compris');
+		 // $this->direPhrase('desolé, je n\'ai pas compris');
 	break;
 	
 }?>
