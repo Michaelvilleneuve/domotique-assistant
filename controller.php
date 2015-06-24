@@ -64,7 +64,7 @@ class Controller {
 		exec('sudo amixer cset numid=1 -- 0');
 		$heure = date("H");
 		if ($heure<23 && $heure>7){
-		exec('mpg321 "http://translate.google.com/translate_tts?tl=fr&q='.urlencode($phrase).'"');
+		exec('mpg321 "http://translate.google.com/translate_tts?tl=fr&q='.urlencode($phrase).'&ie=UTF-8"');
 		}
 		exec('sudo amixer cset numid=1 -- 2000');
 		
