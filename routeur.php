@@ -17,8 +17,8 @@ $routes = array(
 	'ajax',
 );
 /** Auto utilisé pour les requètes envoyées par une arduino **/
-if(empty($_GET['auto'])){
-	if (in_array($url, $routes)) {
+if ( empty($_GET['auto']) ) {
+	if ( in_array($url, $routes) ) {
 		$action = $url.'Action';
 		$controller->$action();
 	}
@@ -26,7 +26,7 @@ if(empty($_GET['auto'])){
 		$controller->erreur();
 	}
 }
-else{
+else {
 	$heure = date("H");
 		if (in_array($url, $routes)) {
 			$action = $url.'Action';
