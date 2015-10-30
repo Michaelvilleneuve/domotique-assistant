@@ -72,7 +72,22 @@ class Controller {
 		exec('sudo amixer cset numid=1 -- 0');
 		$heure = date("H");
 		if ($heure<23 && $heure>7){
-			exec('mpg321 "http://translate.google.com/translate_tts?tl=fr&q='.urlencode($phrase).'&ie=UTF-8"');
+			// Création d'une nouvelle ressource cURL 
+			$ch = curl_init(); $fh = fopen('temp.mp3', 'w'); 
+			// Configuration de l'URL et d'autres options 
+			$header[0]="Accept: audio/webm,audio/ogg,audio/wav,audio/\*;q=0.9,application/ogg;q=0.7,video/\*;q=0.6,\*/\*;q=0.5"; 
+			$header[]="Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"; 
+			$header[]="DNT: 1"; 
+			$header[]="Range: bytes=0"; 
+			$header[]="Cookie: "; 
+			$header[]="Connection: keep-alive";
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+			curl_setopt($ch, CURLOPT_URL, 'https://translate.google.com/translate_tts?ie=UTF-8&q='.urlencode($phrase).'&tl=fr&total=1&idx=0&textlen=16&tk=411432&client=t&prev=input'); curl_setopt($ch, CURLOPT_HEADER, $header); curl_setopt($ch, CURLOPT_REFERER, "https://translate.google.com/?q=lyra+raspberry"); curl_setopt($ch, CURLOPT_COOKIEFILE, ""); curl_setopt($ch, CURLOPT_USERAGENT, "User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"); curl_setopt($ch, CURLOPT_FILE, $fh); 
+			// Récupération de l'URL et affichage sur le naviguateur 
+			$final=curl_exec($ch); echo $final; 
+			// Fermeture de la session cURL 
+			curl_close($ch); 
+			exec('mpg321 temp.mp3'); 
 		}
 		exec('sudo amixer cset numid=1 -- 2000');
 		
