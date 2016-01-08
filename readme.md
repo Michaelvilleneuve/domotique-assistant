@@ -154,6 +154,7 @@ Les prérequis de l'installation sont les suivants :
 	
 	# CURL
 	sudo apt-get install curl
+	sudo apt-get install php5-curl
 	
 	# Ajoutez WWW-DATA aux sudoers
 
@@ -175,7 +176,7 @@ Les prérequis de l'installation sont les suivants :
 	# Wake On Lan, réveil d'un PC à distance
 	sudo apt-get install wakeonlan
 
-	# Avoir une IP fixe
+	# Obtenez une IP fixe, soit via votre box, soit directement sur le raspberry pi
 
 Une fois ceci-fait, deux solutions s'offrent à vous pour télécharger l'assistant vers votre serveur.
 
@@ -191,7 +192,7 @@ Une fois ceci-fait, deux solutions s'offrent à vous pour télécharger l'assist
 	# Clonez ce repository
 	git clone https://github.com/Michaelvilleneuve/domotique-assistant
 
-### Via FTP
+### Via FTP ou ce que vous voulez
 
 Téléchargez le zip et placez les fichiers à la racine de votre serveur web.
 
@@ -250,13 +251,6 @@ Voici un exemple de requête HTTP pouvant être envoyée par une Arduino et comp
 
 
 Cette fonction prend en paramètre la page à questionner (en général index), l'action à effectuer (le case du switch à activer), et dans le cas des prises télécommandées, la valeur que l'on souhaite envoyer (0 pour OFF, 1 pour ON).
-
-
-### Effectuer les requêtes avec Node.js
-
-Effectuer les actions avec un serveur Node.js vous permettrait de gagner grandement en rapidité quant à l'éxecution des commandes d'allumage des prises, etc.
-
-Cela permettrait une meilleure gestion du temps réel par l'événementiel.
 
 
 
