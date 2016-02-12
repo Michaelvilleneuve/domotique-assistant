@@ -1,5 +1,5 @@
 <?php
-class MusicController {
+class MusicModel {
 	// Gestion de la musique
 	public function play() {
 		exec('sudo mocp -S');

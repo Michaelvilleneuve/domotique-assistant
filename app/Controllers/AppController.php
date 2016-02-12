@@ -132,7 +132,8 @@ class AppController {
 	}
 
 	public function glad() {
-		include 'Gladys.php';
+		$question = $_POST['text'];
+		$this->Gladys->respond($question);
 	}
 
 	public function __construct() {
@@ -141,6 +142,7 @@ class AppController {
 		include_once(getcwd().'/app/Models/SmsModel.php');
 		include_once(getcwd().'/app/Models/GladysModel.php');
 		include_once(getcwd().'/app/Models/PriseModel.php');
+		include_once(getcwd().'/app/Models/MusicModel.php');
 
 		$this->layoutpath = getcwd().'/app/Views/layout/';
 		$this->viewpath = getcwd().'/app/Views/';
@@ -148,6 +150,7 @@ class AppController {
 
 		$this->Sms = new SmsModel();
 		$this->Model = new AppModel();
+		$this->Music = new MusicModel();
 		$this->Gladys = new GladysModel();
 		$this->Prise = new PriseModel();
 
