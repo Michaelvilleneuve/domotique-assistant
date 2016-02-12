@@ -72,17 +72,17 @@ class AppModel {
 	}
 	
 	public function augmenterVisite($appareil){
-		$fichier = 'stats/'.$appareil.'-compteur.txt';
+		$fichier = 'datas/stats/'.$appareil.'-compteur.txt';
 		$nombrevisite = $this->lireFichier($fichier);
 		$nombrevisite++;
 		$this->ecrireFichier($fichier,$nombrevisite);
 	}
 	public function afficherUtilisation($appareil) {
-		$this->lireFichier('stats/'.$appareil.'-compteur.txt');
+		$this->lireFichier('datas/stats/'.$appareil.'-compteur.txt');
 		
 	}
 	public function __construct() {
-		include_once(getcwd().'/app/config/config.php');
+		include_once(getcwd().'/config/config.php');
 
 		$this->layoutpath = getcwd().'/app/Views/layout/';
 		$this->viewpath = getcwd().'/app/Views/';

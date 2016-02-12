@@ -13,19 +13,6 @@
 */
 
 class AppController {	
-	// Adresse IP du raspberrypi
-	private $iprasp = '192.168.X.X';
-	// Adresse Mac du PC à réveiller
-	private $adressemac = 'XX:XX:XX:XX:XX:XX';
-	// Ip du PC à réveiller
-	private $ippc = '192.168.X.X';
-	// Numéro SMS sans le 0
-	private $numsms = '606060606';
-	private $val;
-	private $sms;
-	private $layoutpath;
-	private $viewpath;
-	private $rootpath;
 
 	public function index() {
 		$states = $this->Model->getCurrentState();
@@ -80,7 +67,7 @@ class AppController {
 			$this->Gladys->direPhrase('demarrage.');
 		}
 		else {
-			exec('sudo curl http://'.$this->ippc.':7760/poweroff > /dev/null 2>&1');
+			exec('sudo curl http://'.IPPC.':7760/poweroff > /dev/null 2>&1');
 			$this->Gladys->direPhrase('Extinction');
 		}
 	}
@@ -102,12 +89,12 @@ class AppController {
 	public function mouvement() {
 		$contenu=file_get_contents('datas/verouillage.txt'); 
 		if($contenu == 1){
-			$this->Sms->sendSMS('+33'.$this->numsms.'','Alerte déclenchée, mouvement détecté dans la maison.','PREMIUM','Gladys');
+			$this->Sms->sendSMS('+33'.NUMSMS.'','Alerte déclenchée, mouvement détecté dans la maison.','PREMIUM','Gladys');
 			$this->Gladys->direPhrase('Alarme. Appel vocal en cours vers le commissariat.');
 		}
 	}
 	public function ping() {
-		$pc = exec('ping -c 1 -W 1 '.$this->ippc.'');
+		$pc = exec('ping -c 1 -W 1 '.IPPC.'');
 		if ($pc == "") {
 			$checked = '';
 		} else {
@@ -149,7 +136,7 @@ class AppController {
 	}
 
 	public function __construct() {
-		include_once(getcwd().'/app/config/config.php');
+		include_once(getcwd().'/config/config.php');
 		include_once(getcwd().'/app/Models/AppModel.php');
 		include_once(getcwd().'/app/Models/SmsModel.php');
 		include_once(getcwd().'/app/Models/GladysModel.php');
