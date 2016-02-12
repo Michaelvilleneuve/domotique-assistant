@@ -1,23 +1,6 @@
 <?php
 
-/*
-* Librairie d'envoi SMS, SMS ENVOI.
-* Cette librairie nécessite PHP 5 ainsi que la librairie cURL 
-* N'oubliez pas d'éditer le fichier smsenvoi.config.php avant de tenter de l'utiliser
-* L'utilisation de cette librairie nécessite une inscription (gratuite) préalable sur le site http://www.smsenvoi.com ainsi que des crédits SMS.
-* @package pagepackage
-*/
-require_once("smsenvoi.config.php");
-
-
-
-/*
-* Classe SMSENVOI à instancier et utiliser pour communiquer avec le serveur SMSENVOI.com
-* @package smsenvoi
-* @author Stephane Nachez <s.nachez@smsenvoi.com>
-* @copyright SMSENVOI.com
-*/
-class smsenvoi{
+class SmsModel {
 
 	/**
 	* Résultat Brut

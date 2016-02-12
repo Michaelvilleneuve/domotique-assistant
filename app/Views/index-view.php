@@ -3,7 +3,7 @@
   <div id="tab1" class="view tab active">
     <div class="navbar">
       <div class="navbar-inner">
-        <div class="center"><?php echo $temperature; ?> <?php echo  $humidite; ?></div>
+        <div class="center"><?= $states['temperature']; ?> <?php echo  $states['humidite']; ?></div>
       </div>
     </div>
     <div class="pages navbar-fixed"> 
@@ -27,7 +27,7 @@
           <div class="item-title label">Lampe principale</div>
           <div class="item-input">
             <label class="label-switch">
-              <input id="lampe1" class="lampes" type="checkbox" <?php echo $lampe1;?>>
+              <input id="lampe1" class="lampes" type="checkbox" <?= $states['lampe1'];?>>
               <div class="checkbox"></div>
             </label>
           </div>
@@ -41,7 +41,7 @@
           <div class="item-title label">Lampe secondaire</div>
           <div class="item-input">
             <label class="label-switch">
-              <input id="lampe2" class="lampes" type="checkbox" <?php echo $lampe2;?>>
+              <input id="lampe2" class="lampes" type="checkbox" <?= $states['lampe2'];?>>
               <div class="checkbox"></div>
             </label>
           </div>
@@ -57,7 +57,7 @@
           <div class="item-title label">LED</div>
           <div class="item-input">
             <label class="label-switch">
-              <input id="lampe3" class="lampes" type="checkbox" <?php echo $lampe3;?>>
+              <input id="lampe3" class="lampes" type="checkbox" <?= $states['lampe3'];?>>
               <div class="checkbox"></div>
             </label>
           </div>
@@ -87,7 +87,7 @@
           <div class="item-title label">Décodeur TV</div>
           <div class="item-input">
             <label class="label-switch">
-              <input id="decodeur" class="lampes" type="checkbox" <?php echo $decodeur;?>>
+              <input id="decodeur" class="lampes" type="checkbox" <?= $states['decodeur'];?>>
               <div class="checkbox"></div>
             </label>
           </div>
@@ -101,7 +101,7 @@
             <div class="item-title label">Chauffage</div>
             <div class="item-input">
               <label class="label-switch">
-                <input id="lampe4" class="lampes" type="checkbox" <?php echo $lampe4;?>>
+                <input id="lampe4" class="lampes" type="checkbox" <?= $states['lampe4'];?>>
                 <div class="checkbox"></div>
               </label>
             </div>
@@ -215,16 +215,6 @@ $("#tabroot").click(function(){
   $('#routeur').load('index.php?q=ajax&action=routeur');
 });
 // Fonction 
-                            function post(id){
-                              var idpdf = id;
-                              if ($('#'+id).is(':checked')) {
-                              var val = "1";
-                              }
-                              else {
-                                var val = "0";
-                              }
-                            $.post( "index.php?q=ajax&action="+id+"", { val: val } );
-                            }
 $("#eteindretout").click(function(){
   $('.lampes').attr('checked', false);
 });
@@ -258,6 +248,16 @@ $("#lampe3").change(function() {
 $("#lampe4").change(function() {
   post('lampe4');
 });    
+function post(id){
+  var idpdf = id;
+  if ($('#'+id).is(':checked')) {
+  var val = "1";
+  }
+  else {
+    var val = "0";
+  }
+  $.post( "index.php?q=ajax&action="+id+"", { val: val } );
+}
 $("#pc").change(function() {
   post('pc');
   setTimeout(function(){

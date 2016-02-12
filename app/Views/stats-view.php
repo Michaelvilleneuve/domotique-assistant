@@ -7,7 +7,7 @@
           <div class="item-title label">Gestion automatisée chauffage</div>
           <div class="item-input">
             <label class="label-switch">
-              <input id="chauffage" class="lampes" type="checkbox" <?php echo $chaufauto;?>>
+              <input id="chauffage" class="lampes" type="checkbox" <?= $chaufauto;?>>
               <div class="checkbox"></div>
             </label>
           </div>
@@ -20,7 +20,7 @@
           <div class="item-title label">Gestion automatisée réveil</div>
           <div class="item-input">
             <label class="label-switch">
-              <input id="reveil" class="lampes" type="checkbox" <?php echo $reveilauto;?>>
+              <input id="reveil" class="lampes" type="checkbox" <?= $reveilauto;?>>
               <div class="checkbox"></div>
             </label>
           </div>
@@ -33,7 +33,7 @@
           <div class="item-title label">État vérouillage</div>
           <div class="item-input">
             <label class="label-switch">
-              <input id="verouillage" class="lampes" type="checkbox" <?php echo $verrouillage;?>>
+              <input id="verouillage" class="lampes" type="checkbox" <?= $verrouillage;?>>
               <div class="checkbox"></div>
             </label>
           </div>
@@ -49,7 +49,7 @@
       <div class="item-media"><i class="stats pe-7s-light"></i></div>
       <div class="item-inner">
         <div class="item-title">Lampe principale</div>
-        <div class="item-after"><?php echo $nb['lampe1']?></div>
+        <div class="item-after"><?= $nb['lampe1']?></div>
       </div>
     </li>
      <li class="item-content">
