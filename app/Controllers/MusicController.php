@@ -4,7 +4,7 @@ class MusicController {
 	public function play() {
 		exec('sudo mocp -S');
 		exec('sudo mocp -c');
-		exec('sudo mocp -a /var/www/music');
+		exec('sudo mocp -a /var/www/app/assets/music');
 		exec('sudo mocp -t shuffle');
 		exec('sudo mocp -p');
 	}
