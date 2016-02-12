@@ -64,9 +64,9 @@ class Controller {
 		}
 
 		// On passe le tout au layout et à la vue initiale
-		include('Header.php');
+		include('header.php');
 		include('index-view.php');
-		include('Footer.php');
+		include('footer.php');
 	}
 	private function direPhrase($phrase) {
 		exec('sudo amixer cset numid=1 -- 0');
@@ -115,7 +115,7 @@ class Controller {
 		return $nb;
 	}
 	
-	/************* METHODES MUSIQUES **********/
+	// Méthodes musiques
 	
 	private function play() {
 		exec('sudo mocp -S');
@@ -134,7 +134,6 @@ class Controller {
 	private function precedent() {
 		exec('sudo mocp -r');
 	}
-	/**********************************************************************/
 	private function changerPrise($numero,$nom,$val,$code){
 		exec('sudo /home/pi/rcswitch-pi/./send '.$code.' '.$numero.' '.$val.'');
 		$lampe = fopen('datas/'.$nom.'.txt', 'r+');
@@ -145,219 +144,199 @@ class Controller {
 			$this->augmenterVisite($nom);
 		}
 	}
-	public function ajaxAction() {
-		switch($_GET['action']){
-			/* RAFRAICHISSEMENT TEMPERATURE + GESTION CHAUFFAGE */
-			case 'temp':
-				if ($this->capteurtemp) {
-					// Temperature 
-					if (isset($_GET['temp'])){
-						/* On écarte les erreurs (température supérieure à 3 degrès par rapport à la mesure précédente) */
-						$temp = $_GET['temp'];
-						$temperatureprec = file_get_contents('datas/temperature.txt');
-						$difference = $temp-$temperatureprec;
-						$min = -3;
-						if($difference<3 && $difference>$min){
-							$file = fopen('temperature.txt', 'r+');
-							fseek($file, 0);
-							fputs($file, $temp); 
-							fclose($file);
-							$statut= file_get_contents('datas/auto-chauffage.txt');
-							if ($statut == 1) {
-								if ($temp<19) {
-									exec('curl http://'.$this->iprasp.'/index.php?q=ajax\&action=lampe4\&val=1  > /dev/null 2>&1');
-								}
-								elseif ($temp>=20) {
-									$lampe4= file_get_contents('datas/lampe1.txt');
-									if ($lampe4==1)
-										exec('curl http://'.$this->iprasp.'/index.php?q=ajax\&action=lampe4\&val=0  > /dev/null 2>&1');
-								}
-							}
-							if($temp>32){
-								$this->sms->sendSMS('+33'.$this->numsms.'','Température anormale détectée dans la maison.','PREMIUM','Gladys');
-							}
-						}
-					}
-				}
-			break;
-			/* TOUT ALLUMER */
-			case 'allumertout':
-				$this->changerPrise('4','lampe4',1,'10101');	
-				$this->changerPrise('3','lampe4',1,'10101');	
-				$this->changerPrise('2','lampe4',1,'10101');	
-				$this->changerPrise('1','lampe4',1,'10101');
-				$this->changerPrise('1','',1,'11100');		
-				$this->direPhrase('C\'est fait.');
-			break;
-			case 'deverrouiller':
-				$deverouillage = fopen('verouillage.txt', 'r+');
-				fseek($deverouillage, 0);
-				fputs($deverouillage, $this->val); 
-				fclose($deverouillage);
-			break;
-			/* VEROUILLAGE, ALARME, EXTINCTION */
-			case 'verouiller':
-				$this->changerPrise('4','lampe4',0,'10101');	
-				$this->changerPrise('3','lampe4',0,'10101');	
-				$this->changerPrise('2','lampe4',0,'10101');	
-				$this->changerPrise('1','lampe4',0,'10101');
-				// decodeur tv
-				$this->changerPrise('1','',0,'11100');
-				$this->pause();
-				exec("sudo pkill mpg321");
-				$this->direPhrase('Maison verouiller.');
-				sleep(5);
-				$this->changerPrise('3','verouillage',1,'11100');
-			break;
-			/* EXTINCTION */
-			case 'eteindretout':
-				$this->changerPrise('4','lampe4',0,'10101');	
-				$this->changerPrise('3','lampe4',0,'10101');	
-				$this->changerPrise('2','lampe4',0,'10101');	
-				$this->changerPrise('1','lampe4',0,'10101');
-				$this->changerPrise('1','',0,'11100');		
-				$this->direPhrase('C\'est fait.');
-			break;
-			/* REBOOT SERVEUR */
-			case 'serveur':
-				$this->direPhrase('Le serveur redémarre.');
-				$this->ecrireDate('reboot');
-				$this->augmenterVisite('serveur');
-				exec('sudo reboot');
-				
-			break;
-			/* OUVERTURE VERROU */
-			case 'ouvrir':
-				$this->changerPrise('3','verouillage',0,'11100');
-				$this->changerPrise('2','',0,'11100');	
-				sleep(7);
-				$this->changerPrise('2','',1,'11100');	
-			
-			break;
-			/* FERMETURE VERROU */
-			case 'fermer':
-				$this->changerPrise('3','',1,'11100');
-			break;
-			/* ALLUMAGE, EXCTINCTION PC */
-			case 'pc':
-				if($_POST['val']==1) {exec('wakeonlan '.$this->adressemac.'');
-					$this->augmenterVisite('pc');
-					$this->direPhrase('demarrage.');
-				}
-				else {
-					exec('sudo curl http://'.$this->ippc.':7760/poweroff > /dev/null 2>&1');
-					$this->direPhrase('Extinction');
-				}
-			break;
-			/* Décodeur */
-			case 'decodeur':
-				$this->changerPrise('1','decodeur',$this->val,'11100');			
-			break;
-			/* tablette */ 
-			case 'tablette':
-				$this->changerPrise('2','',$this->val,'11100');			
-			break;
-			/* CHAUFFAGE */ 
-			case 'lampe4':
-				$this->changerPrise('4','lampe4',$this->val,'10101');			
-			break;
-			/* LED */
-			case 'lampe3':
-				$this->changerPrise('3','lampe3',$this->val,'10101');				
-			break;
-			/* LAMPE SECONDAIRE 2 */
-			case 'lampe2':
-				$this->changerPrise('2','lampe2',$this->val,'10101');	
-			break;
-			/* LAMPE PRINCIPALE */ 
-			case 'lampe1':
-				$this->changerPrise('1','lampe1',$this->val,'10101');	
-			break;
-			/* Réveil auto */
-			case 'reveil':
-				$reveil = fopen('datas/auto-reveil.txt', 'r+');
-				fseek($reveil, 0);
-				fputs($reveil, $this->val); 
-				fclose($reveil);
-			break;
-			/* Chauffage auto */
-			case 'chauffage':
-				$chauffage = fopen('datas/auto-chauffage.txt', 'r+');
-				fseek($chauffage, 0);
-				fputs($chauffage, $this->val); 
-				fclose($chauffage);
-			break;
-			/* DÉTECTION */
-			case 'mouvement':
-				$contenu=file_get_contents('datas/verouillage.txt'); 
-				if($contenu == 1){
-					$this->sms->sendSMS('+33'.$this->numsms.'','Alerte déclenchée, mouvement détecté dans la maison.','PREMIUM','Gladys');
-					$this->direPhrase('Alarme. Appel vocal en cours vers le commissariat.');
-				}
-			break;
-			// Affichage direct caméra
-			case 'camera':
-				include('musique-view.php');
-			break;
-			// Affichage stats
-			case 'stats':
-				$verrouillage = file_get_contents('datas/verouillage.txt');
-				if($verrouillage=='1'){$verrouillage='checked';}else{$verrouillage='';}
-				
-				$chaufauto = fopen('datas/auto-chauffage.txt', 'r+');
-				$chaufauto= fgets($chaufauto);
-				if($chaufauto=='1'){$chaufauto='checked';}else{$chaufauto='';}
-				
-				$reveilauto = fopen('datas/auto-reveil.txt', 'r+');
-				$reveilauto= fgets($reveilauto);
-				if($reveilauto=='1'){$reveilauto='checked';}else{$reveilauto='';}
-				
-				$nb=array();
-				$nb['lampe1'] = 	$this->afficherUtilisation('lampe1');
-				$nb['lampe2'] = 	$this->afficherUtilisation('lampe2');
-				$nb['lampe3'] = 	$this->afficherUtilisation('lampe3');
-				$nb['lampe4'] = 	$this->afficherUtilisation('lampe4');
-				$nb['pc'] = 		$this->afficherUtilisation('pc');
-				$nb['sonnette'] = 	$this->afficherUtilisation('sonnette');
-				$nb['serveur'] = 	$this->afficherUtilisation('serveur');
-				$nb['datereboot'] = $this->afficherUtilisation('reboot');
-				
-				include('stats-view.php');
-
-			break;
-			case 'routeur':
-				include 'gladys-view.php'; 
-			break;
-			// PING DU PC UNIQUEMENT
-			case 'ping':
-					$pc = exec('ping -c 1 -W 1 '.$this->ippc.'');
-					if ($pc == "") {
-					echo '<input type="checkbox" id="pc">
-					             <div class="checkbox"></div>
-					             <script>$("#pc").change(function() {
-							post(\'pc\');
-							});</script>
-					             ';
-					} else {
-						echo '<input type="checkbox" id="pc" checked>
-					             <div class="checkbox"></div>
-					             <script>$("#pc").change(function() {
-							post(\'pc\');
-							});</script>
-					             ';
-					}
-			break;
-			/* VUE GLADYS */
-			case 'glad':
-				include 'Gladys.php';
-			break;
+	private function changerPrises($prises,$val,$code){
+		foreach($prises as $prise) {
+			$this->changerPrise($prise,'lampe'.$prise,$val,$code)
 		}
 	}
-	public function __construct(){
+	private function getStatsForEeach() {
+		$nb = array('lampe1','lampe2','lampe3','lampe4','pc','sonnette','serveur');
+		foreach ($nb as $stat) {
+			$this->afficherUtilisation($stat);
+		}
+		$nb['datereboot'] = $this->afficherUtilisation('reboot');
+
+		return $nb;
+	}
+	// Méthodes publiques
+
+
+	public function temp() {
+		if ($this->capteurtemp) {
+			// Temperature 
+			if (isset($_GET['temp'])){
+				/* On écarte les erreurs (température supérieure à 3 degrès par rapport à la mesure précédente) */
+				$temp = $_GET['temp'];
+				$temperatureprec = file_get_contents('datas/temperature.txt');
+				$difference = $temp-$temperatureprec;
+				$min = -3;
+				if($difference<3 && $difference>$min){
+					$file = fopen('temperature.txt', 'r+');
+					fseek($file, 0);
+					fputs($file, $temp); 
+					fclose($file);
+					$statut= file_get_contents('datas/auto-chauffage.txt');
+					if ($statut == 1) {
+						if ($temp<19) {
+							exec('curl http://'.$this->iprasp.'/index.php?q=ajax\&action=lampe4\&val=1  > /dev/null 2>&1');
+						}
+						elseif ($temp>=20) {
+							$lampe4= file_get_contents('datas/lampe1.txt');
+							if ($lampe4==1)
+								exec('curl http://'.$this->iprasp.'/index.php?q=ajax\&action=lampe4\&val=0  > /dev/null 2>&1');
+						}
+					}
+					if($temp>32){
+						$this->sms->sendSMS('+33'.$this->numsms.'','Température anormale détectée dans la maison.','PREMIUM','Gladys');
+					}
+				}
+			}
+		}
+	}
+	public function allumertout() {
+		$this->changerPrises(array(1,2,3,4),1,'10101');
+		$this->changerPrise('1','',1,'11100');		
+		$this->direPhrase('C\'est fait.');
+	}
+	public function deverrouiller() {
+		$deverouillage = fopen('verouillage.txt', 'r+');
+		fseek($deverouillage, 0);
+		fputs($deverouillage, $this->val); 
+		fclose($deverouillage);
+	}
+	public function verouiller() {
+		$this->changerPrises(array(1,2,3,4),0,'10101');	
+		$this->changerPrise('1','',0,'11100');
+		$this->pause();
+		exec("sudo pkill mpg321");
+		$this->direPhrase('Maison verouiller.');
+	}
+	public function eteindretout() {
+		$this->changerPrise(array(1,2,3,4),0,'10101');
+		$this->changerPrise('1','',0,'11100');		
+		$this->direPhrase('C\'est fait.');
+	}
+	public function serveur() {
+		$this->direPhrase('Le serveur redémarre.');
+		$this->ecrireDate('reboot');
+		$this->augmenterVisite('serveur');
+		exec('sudo reboot');
+	}
+	public function ouvrir() {
+		$this->changerPrise('3','verouillage',0,'11100');
+		$this->changerPrise('2','',0,'11100');	
+		sleep(7);
+		$this->changerPrise('2','',1,'11100');	
+	}
+	public function pc() {
+		if($_POST['val']==1) {exec('wakeonlan '.$this->adressemac.'');
+			$this->augmenterVisite('pc');
+			$this->direPhrase('demarrage.');
+		}
+		else {
+			exec('sudo curl http://'.$this->ippc.':7760/poweroff > /dev/null 2>&1');
+			$this->direPhrase('Extinction');
+		}
+	}
+	public function reveil() {
+		$reveil = fopen('datas/auto-reveil.txt', 'r+');
+		fseek($reveil, 0);
+		fputs($reveil, $this->val); 
+		fclose($reveil);
+	}
+	public function stats() {
+		$verrouillage = file_get_contents('datas/verouillage.txt');
+
+		if($verrouillage=='1'){$verrouillage='checked';}else{$verrouillage='';}
+		
+		$chaufauto = fopen('datas/auto-chauffage.txt', 'r+');
+		$chaufauto= fgets($chaufauto);
+
+		if($chaufauto=='1'){$chaufauto='checked';}else{$chaufauto='';}
+		
+		$reveilauto = fopen('datas/auto-reveil.txt', 'r+');
+		$reveilauto= fgets($reveilauto);
+
+		if($reveilauto=='1'){$reveilauto='checked';}else{$reveilauto='';}
+		
+		$nb = $this->getStatsForEeach();
+		
+		include('stats-view.php');
+	}
+	public function chauffage() {
+		$chauffage = fopen('datas/auto-chauffage.txt', 'r+');
+		fseek($chauffage, 0);
+		fputs($chauffage, $this->val); 
+		fclose($chauffage);
+	}
+	public function mouvement() {
+		$contenu=file_get_contents('datas/verouillage.txt'); 
+		if($contenu == 1){
+			$this->sms->sendSMS('+33'.$this->numsms.'','Alerte déclenchée, mouvement détecté dans la maison.','PREMIUM','Gladys');
+			$this->direPhrase('Alarme. Appel vocal en cours vers le commissariat.');
+		}
+	}
+	public function ping() {
+		$pc = exec('ping -c 1 -W 1 '.$this->ippc.'');
+		if ($pc == "") {
+			$checked = '';
+		} else {
+			$checked = 'checked';
+		}
+		$content = '
+		     <input type="checkbox" id="pc"'.$checked.'>
+	         <div class="checkbox"></div>
+             <script>
+             	$("#pc").change(function() {
+					post(\'pc\');
+				});
+			</script>
+         ';
+		echo $content;
+	}
+	public function decodeur() {
+		$this->changerPrise('1','decodeur',$this->val,'11100');			
+	}
+
+	public function tablette() {
+		$this->changerPrise('2','',$this->val,'11100');			
+	}
+
+	public function lampe4() {
+		$this->changerPrise('4','lampe4',$this->val,'10101');			
+	}
+
+	public function lampe3() {
+		$this->changerPrise('3','lampe3',$this->val,'10101');				
+	}
+
+	public function lampe2() {
+		$this->changerPrise('2','lampe2',$this->val,'10101');	
+	}
+
+	public function lampe1() {
+		$this->changerPrise('1','lampe1',$this->val,'10101');	
+	}
+
+	public function camera() {
+		include('musique-view.php');
+	}
+
+	public function routeur() {
+		include 'gladys-view.php'; 
+	}
+
+	public function glad() {
+		include 'Gladys.php';
+	}
+
+	public function __construct() {
+
 		$this->sms=new smsenvoi();
 		if ( isset($_POST['val']) )
 			$this->val=$_POST['val'];
 		elseif ( isset($_GET['val']) )
 			$this->val=$_GET['val'];
+
 	}
 }

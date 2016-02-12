@@ -27,15 +27,12 @@ if ( empty($_GET['auto']) ) {
 	}
 }
 else {
+	if($url == 'ajax') {
+		$url = $_GET['action'];
+	}
 	$heure = date("H");
-		if (in_array($url, $routes)) {
-			$action = $url.'Action';
-			$controller->$action();
-		}
-		else {
-			$controller->erreur();
-		}
-	
+	$action = $url.'Action';
+	$controller->$action();
 }
 
 ?>
