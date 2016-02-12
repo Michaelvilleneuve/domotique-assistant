@@ -28,11 +28,18 @@ if ( empty($_GET['auto']) ) {
 }
 else {
 	if($url == 'ajax') {
-		$url = $_GET['action'];
+		if (strpos($_GET['action'],'lampe')) {
+			$params = str_replace('lampe','',$_GET['action']);
+			$url = 'lampe';
+		} else {
+			$url = $_GET['action'];
+			$params = '';
+		}
+
 	}
 	$heure = date("H");
 	$action = $url.'Action';
-	$controller->$action();
+	$controller->$action($params);
 }
 
 ?>
