@@ -21,7 +21,6 @@ class AppController {
 		include($this->viewpath.'index-view.php');
 		include($this->layoutpath.'footer.php');
 	}
-	// Méthodes publiques
 	public function temp() {
 		if (isset($_GET['temp'])){
 			if ($this->Model->validateTempResult()) {
@@ -64,7 +63,8 @@ class AppController {
 		$this->Prise->toggle('2','',1);	
 	}
 	public function pc() {
-		if($_POST['val']==1) {exec('wakeonlan '.$this->adressemac.'');
+		if($this->val) { 
+			exec('wakeonlan '.$this->adressemac.'');
 			$this->Model->augmenterVisite('pc');
 			$this->Gladys->direPhrase('demarrage.');
 		}
