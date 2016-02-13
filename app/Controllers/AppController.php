@@ -31,22 +31,22 @@ class AppController {
 		}
 	}
 	public function allumertout() {
-		$this->Prise->toggleSeveral(array(1,2,3,4),1,'10101');
-		$this->Prise->toggle('1','',1,'11100');		
+		$this->Prise->code = '10101';
+		$this->Prise->toggleSeveral(array(1,2,3,4),1);
 		$this->Gladys->direPhrase('C\'est fait.');
 	}
 	public function deverrouiller() {
 		$this->Model->ecrireFichier('verouillage.txt', $this->val);
 	}
 	public function verouiller() {
-		$this->Prise->toggleSeveral(array(1,2,3,4),0,'10101');	
-		$this->Prise->toggle('1','',0,'11100');
+		$this->Prise->code = '10101';
+		$this->Prise->toggleSeveral(array(1,2,3,4),0);
 		$this->Gladys->pause();
 		$this->Gladys->direPhrase('Maison verouiller.');
 	}
 	public function eteindretout() {
-		$this->Prise->toggleSeveral(array(1,2,3,4),0,'10101');
-		$this->Prise->toggle('1','',0,'11100');		
+		$this->Prise->code = '10101';
+		$this->Prise->toggleSeveral(array(1,2,3,4),0);
 		$this->Gladys->direPhrase('C\'est fait.');
 	}
 	public function serveur() {
@@ -56,10 +56,12 @@ class AppController {
 		exec('sudo reboot');
 	}
 	public function ouvrir() {
-		$this->Prise->toggle('3','verouillage',0,'11100');
-		$this->Prise->toggle('2','',0,'11100');	
+		$this->Prise->code = '11100';
+		$this->Prise->toggle('3','verouillage',0);
+		$this->Prise->code = '11100';
+		$this->Prise->toggle('2','',0);	
 		sleep(7);
-		$this->Prise->toggle('2','',1,'11100');	
+		$this->Prise->toggle('2','',1);	
 	}
 	public function pc() {
 		if($_POST['val']==1) {exec('wakeonlan '.$this->adressemac.'');
@@ -112,11 +114,13 @@ class AppController {
 		echo $content;
 	}
 	public function decodeur() {
-		$this->Prise->toggle('1','decodeur',$this->val,'11100');			
+		$this->Prise->code = '11100';
+		$this->Prise->toggle('1','decodeur',$this->val);			
 	}
 
 	public function tablette() {
-		$this->Prise->toggle('2','',$this->val,'11100');			
+		$this->Prise->code = '11100';
+		$this->Prise->toggle('2','',$this->val);			
 	}
 
 	public function lampe($lampe_to_toggle) {

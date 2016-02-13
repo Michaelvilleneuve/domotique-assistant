@@ -1,8 +1,9 @@
 <?php
 class PriseModel extends AppModel {
+	public $code;
 	// Gestion des prises 
-	public function toggle($numero,$nom,$val,$code){
-		exec('sudo /home/pi/rcswitch-pi/./send '.$code.' '.$numero.' '.$val.'');
+	public function toggle($numero,$nom,$val){
+		exec('sudo /home/pi/rcswitch-pi/./send '.$this->code.' '.$numero.' '.$val.'');
 		$lampe = 'datas/'.$nom.'.txt';
 		if(!empty($nom)){
 			parent::ecrireFichier($lampe,$val);
@@ -10,9 +11,9 @@ class PriseModel extends AppModel {
 		}
 	}
 
-	public function toggleSeveral($prises,$val,$code){
+	public function toggleSeveral($prises,$val){
 		foreach($prises as $prise) {
-			$this->changerPrise($prise,'lampe'.$prise,$val,$code);
+			$this->toggle($prise,'lampe'.$prise,$val,$this->code);
 		}
 	}
 
@@ -26,6 +27,4 @@ class PriseModel extends AppModel {
 		}
 		return $nb;
 	}
-
-
 }
