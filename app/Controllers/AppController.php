@@ -41,7 +41,7 @@ class AppController {
 		$this->Prise->code = '10101';
 		$this->Prise->toggleSeveral(array(1,2,3,4),0);
 		$this->Gladys->pause();
-		$this->Gladys->direPhrase('Maison verouiller.');
+		$this->Gladys->direPhrase('Maison verouillée.');
 	}
 	public function eteindretout() {
 		$this->Prise->code = '10101';
@@ -66,7 +66,7 @@ class AppController {
 		if($this->val) { 
 			exec('wakeonlan '.$this->adressemac.'');
 			$this->Model->augmenterVisite('pc');
-			$this->Gladys->direPhrase('demarrage.');
+			$this->Gladys->direPhrase('Démarrage.');
 		}
 		else {
 			exec('sudo curl http://'.IPPC.':7760/poweroff > /dev/null 2>&1');
@@ -89,7 +89,7 @@ class AppController {
 		$this->Model->ecrireFichier('datas/auto-chauffage.txt',$this->val);
 	}
 	public function mouvement() {
-		$contenu=file_get_contents('datas/verouillage.txt'); 
+		$contenu = $this->Model->lireFichier('datas/verouillage.txt'); 
 		if($contenu == 1){
 			$this->Sms->sendSMS('+33'.NUMSMS.'','Alerte déclenchée, mouvement détecté dans la maison.','PREMIUM','Gladys');
 			$this->Gladys->direPhrase('Alarme. Appel vocal en cours vers le commissariat.');
@@ -102,16 +102,7 @@ class AppController {
 		} else {
 			$checked = 'checked';
 		}
-		$content = '
-		     <input type="checkbox" id="pc"'.$checked.'>
-	         <div class="checkbox"></div>
-             <script>
-             	$("#pc").change(function() {
-					post(\'pc\');
-				});
-			</script>
-         ';
-		echo $content;
+		include($this->viewpath.'ping-view.php');
 	}
 	public function decodeur() {
 		$this->Prise->code = '11100';
@@ -124,7 +115,8 @@ class AppController {
 	}
 
 	public function lampe($lampe_to_toggle) {
-		$this->Prise->toggle($lampe_to_toggle,'lampe'.$lampe_to_toggle,$this->val,'10101');			
+		$this->Prise->code = '10101';
+		$this->Prise->toggle($lampe_to_toggle,'lampe'.$lampe_to_toggle,$this->val);			
 	}
 
 	public function camera() {
@@ -165,6 +157,6 @@ class AppController {
 
 	}
 	private function load($folder, $class_name) {
-		include_once(getcwd().'/app/Models/'.$class_name.'.php');
+		include_once(getcwd().'/app/'.$folder.'/'.$class_name.'.php');
 	}
 }
