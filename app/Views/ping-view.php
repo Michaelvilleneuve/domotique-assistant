@@ -2,6 +2,6 @@
 <div class="checkbox"></div>
 <script>
 $("#pc").change(function() {
-	post(\'pc\');
+	post('pc');
 });
 </script>
