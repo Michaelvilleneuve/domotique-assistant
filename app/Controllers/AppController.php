@@ -15,7 +15,7 @@
 class AppController {	
 
 	public function index() {
-		$states = $this->Model->getCurrentState();
+		$states = $this->App->getCurrentState();
 		// On passe le tout au layout et à la vue initiale
 		include($this->layoutpath.'header.php');
 		include($this->viewpath.'index-view.php');
@@ -23,9 +23,9 @@ class AppController {
 	}
 	public function temp() {
 		if (isset($_GET['temp'])){
-			if ($this->Model->validateTempResult()) {
-				$file = $this->Model->ecrireFichier('temperature.txt', str_replace('.00',$temp));
-				$this->Model->toggleChauffage($temp);
+			if ($this->App->validateTempResult()) {
+				$file = $this->App->ecrireFichier('temperature.txt', str_replace('.00',$temp));
+				$this->App->toggleChauffage($temp);
 			}
 		}
 	}
@@ -35,7 +35,7 @@ class AppController {
 		$this->Gladys->direPhrase('C\'est fait.');
 	}
 	public function deverrouiller() {
-		$this->Model->ecrireFichier('verouillage.txt', $this->val);
+		$this->App->ecrireFichier('verouillage.txt', $this->val);
 	}
 	public function verouiller() {
 		$this->Prise->code = '10101';
@@ -50,8 +50,8 @@ class AppController {
 	}
 	public function serveur() {
 		$this->Gladys->direPhrase('Le serveur redémarre.');
-		$this->Model->ecrireDate('reboot');
-		$this->Model->augmenterVisite('serveur');
+		$this->App->ecrireDate('reboot');
+		$this->App->augmenterVisite('serveur');
 		exec('sudo reboot');
 	}
 	public function ouvrir() {
@@ -65,7 +65,7 @@ class AppController {
 	public function pc() {
 		if($this->val) { 
 			exec('wakeonlan '.$this->adressemac.'');
-			$this->Model->augmenterVisite('pc');
+			$this->App->augmenterVisite('pc');
 			$this->Gladys->direPhrase('Démarrage.');
 		}
 		else {
@@ -74,22 +74,22 @@ class AppController {
 		}
 	}
 	public function reveil() {
-		$reveil = $this->Model->lireFichier('datas/auto-reveil.txt');
+		$reveil = $this->App->lireFichier('datas/auto-reveil.txt');
 	}
 	public function stats() {
-		$verrouillage = $this->Model->getOneState('verouillage');
-		$reveilauto = $this->Model->getOneState('auto-reveil');
-		$chaufauto = $this->Model->getOneState('auto-chauffage');
+		$verrouillage = $this->App->getOneState('verouillage');
+		$reveilauto = $this->App->getOneState('auto-reveil');
+		$chaufauto = $this->App->getOneState('auto-chauffage');
 		
 		$nb = $this->Prise->getStatsForEeach();
 		
 		include $this->viewpath.'stats-view.php';
 	}
 	public function chauffage() {
-		$this->Model->ecrireFichier('datas/auto-chauffage.txt',$this->val);
+		$this->App->ecrireFichier('datas/auto-chauffage.txt',$this->val);
 	}
 	public function mouvement() {
-		$contenu = $this->Model->lireFichier('datas/verouillage.txt'); 
+		$contenu = $this->App->lireFichier('datas/verouillage.txt'); 
 		if($contenu == 1){
 			$this->Sms->sendSMS('+33'.NUMSMS.'','Alerte déclenchée, mouvement détecté dans la maison.','PREMIUM','Gladys');
 			$this->Gladys->direPhrase('Alarme. Appel vocal en cours vers le commissariat.');
@@ -133,30 +133,20 @@ class AppController {
 	}
 
 	public function __construct() {
-		include_once(getcwd().'/config/config.php');
-		include_once(getcwd().'/app/Models/AppModel.php');
-		include_once(getcwd().'/app/Models/SmsModel.php');
-		include_once(getcwd().'/app/Models/GladysModel.php');
-		include_once(getcwd().'/app/Models/PriseModel.php');
-		include_once(getcwd().'/app/Models/MusicModel.php');
-
 		$this->layoutpath = getcwd().'/app/Views/layout/';
 		$this->viewpath = getcwd().'/app/Views/';
 		$this->rootpath = getcwd().'/';
 
-		$this->Sms = new SmsModel();
-		$this->Model = new AppModel();
-		$this->Music = new MusicModel();
-		$this->Gladys = new GladysModel();
-		$this->Prise = new PriseModel();
+		$models = ['AppModel','SmsModel','MusicModel','GladysModel','PriseModel'];
+		foreach ($models as $model) {
+			$instance_name = str_replace('Model','',$model);
+			$this->$instance_name = new $model;
+		}
 
 		if ( isset($_POST['val']) )
 			$this->val=$_POST['val'];
 		elseif ( isset($_GET['val']) )
 			$this->val=$_GET['val'];
 
-	}
-	private function load($folder, $class_name) {
-		include_once(getcwd().'/app/'.$folder.'/'.$class_name.'.php');
 	}
 }

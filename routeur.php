@@ -1,14 +1,6 @@
 <?php
-/*
-* Copyright 2015 Michaël Villeneuve
-* 
-* Routeur.php 
-*
-* Routeur
-* Ce fichier permet le routage des requêtes entrantes dans l'assistant. 
-*
-*/ 
-require_once 'app/Controllers/AppController.php';
+
+require_once(getcwd().'/config/config.php');
 
 $url = (isset($_GET['q']) AND !empty($_GET['q'])) ? $_GET['q'] : 'index';
 $controller = new AppController();
@@ -24,4 +16,17 @@ if ($url == 'ajax') {
 }
 
 $controller->$url($params);
+
+function __autoload($class_name) {
+	$controller = getcwd().'/app/Controllers/'.$class_name.'.php';
+	$model = getcwd().'/app/Models/'.$class_name.'.php';
+
+    if (file_exists($model))
+    	include_once($model);
+    elseif (file_exists($controller))
+    	include_once($controller);
+    else 
+    	return false;
+
+}
 ?>
