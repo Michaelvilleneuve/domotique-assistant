@@ -119,7 +119,7 @@ class AppController {
 		$this->viewpath = getcwd().'/app/Views/';
 		$this->rootpath = getcwd().'/';
 
-		$models = ['AppModel','SmsModel','MusicModel','GladysModel','PriseModel'];
+		$models = ['AppModel','SmsModel','MusicModel','GladysModel','PriseModel','PcModel'];
 		foreach ($models as $model) {
 			$instance_name = str_replace('Model','',$model);
 			$this->$instance_name = new $model;
