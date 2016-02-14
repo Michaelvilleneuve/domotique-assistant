@@ -1,7 +1,7 @@
 <?php
 class PriseModel extends AppModel {
 	public $code;
-	// Gestion des prises 
+
 	public function toggle($numero,$nom,$val){
 		exec('sudo /home/pi/rcswitch-pi/./send '.$this->code.' '.$numero.' '.$val.'');
 		$lampe = 'datas/'.$nom.'.txt';

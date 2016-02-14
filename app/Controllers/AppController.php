@@ -1,32 +1,16 @@
 <?php 
-/*
-* Copyright 2015 Michaël Villeneuve
-* 
-* Controller.php 
-*
-* Ce fichier controlle l'ensemble des fonctionnalités de l'assistant.
-* Il permet aussi la configuration globale via les attributs privés du controlleur.
-*
-* 
-* 
-*
-*/
-
 class AppController {	
 
 	public function index() {
 		$states = $this->App->getCurrentState();
-		// On passe le tout au layout et à la vue initiale
 		include($this->layoutpath.'header.php');
 		include($this->viewpath.'index-view.php');
 		include($this->layoutpath.'footer.php');
 	}
 	public function temp() {
-		if (isset($_GET['temp'])){
-			if ($this->App->validateTempResult()) {
-				$file = $this->App->ecrireFichier('temperature.txt', str_replace('.00',$temp));
-				$this->App->toggleChauffage($temp);
-			}
+		if ($this->App->validateTempResult()) {
+			$file = $this->App->ecrireFichier('temperature.txt', str_replace('.00',$temp));
+			$this->App->toggleChauffage($temp);
 		}
 	}
 	public function allumertout() {
@@ -64,13 +48,10 @@ class AppController {
 	}
 	public function pc() {
 		if($this->val) { 
-			exec('wakeonlan '.$this->adressemac.'');
-			$this->App->augmenterVisite('pc');
-			$this->Gladys->direPhrase('Démarrage.');
+			$this->Pc->turnOn();
 		}
 		else {
-			exec('sudo curl http://'.IPPC.':7760/poweroff > /dev/null 2>&1');
-			$this->Gladys->direPhrase('Extinction');
+			$this->Pc->turnOff();
 		}
 	}
 	public function reveil() {
@@ -96,6 +77,7 @@ class AppController {
 		}
 	}
 	public function ping() {
+		//TODO : Make this a PC model method
 		$pc = exec('ping -c 1 -W 1 '.IPPC.'');
 		if ($pc == "") {
 			$checked = '';

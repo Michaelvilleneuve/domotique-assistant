@@ -1,9 +1,6 @@
 <?php 
 class AppModel {
-	public $layoutpath;
 	protected $numbprises = 4;
-	public $viewpath;
-	public $rootpath;
 	protected $capteurtemp = true;
 	protected $capteurhum = true;
 
@@ -27,10 +24,14 @@ class AppModel {
 		$this->ecrireFichier('stats/'.$fichier.'-compteur.txt',$date);
 	}
 	public function validateTempResult() {
-		$temp = $_GET['temp'];
-		$temperatureprec = file_get_contents('datas/temperature.txt');
-		$difference = $temp-$temperatureprec;
-		return ($difference < 3 && $difference > -3) ? true : false;
+		if (isset($_GET['temp'])){
+			$temp = $_GET['temp'];
+			$temperatureprec = file_get_contents('datas/temperature.txt');
+			$difference = $temp-$temperatureprec;
+			return ($difference < 3 && $difference > -3) ? true : false;
+		} else {
+			return false;
+		}
 	}
 
 	public function toggleChauffage($temp) {
@@ -48,7 +49,6 @@ class AppModel {
 		}
 	}
 	public function getCurrentState() {
-		// On regarde l'état des différentes prises
 		$states = [];
 		for ($i = 1; $i < $this->numbprises; $i++) {
 			$states['lampe'.$i] = $this->lireFichier('datas/lampe'.$i.'.txt', 'r+');
@@ -59,12 +59,10 @@ class AppModel {
 		$states['decodeur'] = ($states['decodeur'] == '1') ? 'checked' : '';
 
 		if($this->capteurtemp){
-			// Temperature 
 			$states['temperature'] = $this->lireFichier('datas/temperature.txt')."°C"; 
 			$states['temperature'] = str_replace('.000', '', $states['temperature']);
 		}
 		if($this->capteurhum){
-			// Humidité 
 			$states['humidite'] = $this->lireFichier('datas/humidite.txt')."%"; 
 			$states['humidite'] = str_replace('.000', '', $states['humidite']);
 		}
@@ -80,13 +78,6 @@ class AppModel {
 	public function afficherUtilisation($appareil) {
 		$this->lireFichier('datas/stats/'.$appareil.'-compteur.txt');
 		
-	}
-	public function __construct() {
-		include_once(getcwd().'/config/config.php');
-
-		$this->layoutpath = getcwd().'/app/Views/layout/';
-		$this->viewpath = getcwd().'/app/Views/';
-		$this->rootpath = getcwd().'/';
 	}
 	public function getOneState($entity) {
 		$entity = $this->lireFichier('datas/'.$entity.'.txt');
