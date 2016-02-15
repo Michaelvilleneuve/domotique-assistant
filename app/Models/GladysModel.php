@@ -1,11 +1,24 @@
 <?php
-class GladysModel {
+class GladysModel extends AppModel {
 	public function direPhrase($phrase) {
 		exec('sudo amixer cset numid=1 -- 0');
 		exec('mpg321 temp.mp3'); 
 		exec('sudo amixer cset numid=1 -- 2000');
 		
 		return $phrase;
+	}
+	public function find($name) {
+		foreach ($this->globals as $global_name => $global) {
+			if ($global_name == $name) {
+				$this->name = $global_name;
+				$this->statut = $global['statut'];
+				return $prise;
+			}
+		}
+	}
+	public function update() {
+		$this->datas['globals'][$this->name]['statut'] = $this->statut;
+		parent::save();
 	}
 	public function respond($tothisphrase) {
 		$tothisphrase = ucfirst($tothisphrase);
@@ -110,6 +123,10 @@ class GladysModel {
 			break;
 			
 		}
+	}
+	public function __construct() {
+		parent::__construct();
+		$this->globals = $this->datas['globals'];
 	}
 
 }

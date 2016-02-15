@@ -9,13 +9,21 @@ class AppController {
 	}
 	public function temp() {
 		if ($this->App->validateTempResult()) {
-			$file = $this->App->ecrireFichier('temperature.txt', str_replace('.00',$temp));
+			$temperature = $_GET['temp'];
+			$this->Capteur->find('auto-chauffage');
+			$this->Capteur->value($temperature);
+			$this->Capteur->update();
 			$this->App->toggleChauffage($temp);
 		}
 	}
 	public function allumertout() {
 		$this->Prise->code = '10101';
 		$this->Prise->toggleSeveral(array(1,2,3,4),1);
+		$this->Gladys->direPhrase('C\'est fait.');
+	}
+	public function eteindretout() {
+		$this->Prise->code = '10101';
+		$this->Prise->toggleSeveral(array(1,2,3,4),0);
 		$this->Gladys->direPhrase('C\'est fait.');
 	}
 	public function deverrouiller() {
@@ -28,11 +36,6 @@ class AppController {
 		$this->Prise->toggleSeveral(array(1,2,3,4),0);
 		$this->Gladys->pause();
 		$this->Gladys->direPhrase('Maison verouillée.');
-	}
-	public function eteindretout() {
-		$this->Prise->code = '10101';
-		$this->Prise->toggleSeveral(array(1,2,3,4),0);
-		$this->Gladys->direPhrase('C\'est fait.');
 	}
 	public function serveur() {
 		$this->Gladys->direPhrase('Le serveur redémarre.');
@@ -55,7 +58,7 @@ class AppController {
 		}
 	}
 	public function reveil() {
-		$reveil = $this->App->lireFichier('datas/auto-reveil.txt');
+		$reveil = $this->Gladys->find('auto-reveil');
 	}
 	public function stats() {
 		$verrouillage = $this->App->getOneState('verouillage');
@@ -67,7 +70,9 @@ class AppController {
 		include $this->viewpath.'stats-view.php';
 	}
 	public function chauffage() {
-		$this->App->ecrireFichier('datas/auto-chauffage.txt',$this->val);
+		$this->Gladys->find('auto-chauffage');
+		$this->Gladys->statut = $this->val;
+		$this->Gladys->update();
 	}
 	public function mouvement() {
 		$contenu = $this->App->lireFichier('datas/verouillage.txt'); 

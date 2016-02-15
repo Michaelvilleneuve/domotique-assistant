@@ -9,6 +9,10 @@ class CapteurModel extends AppModel {
 			}
 		}
 	}
+	public function update() {
+		$this->datas['sensors'][$this->name] = $this->value;
+		parent::save();
+	}
 	public function get_temperature() {
 		return str_replace('.00','',$this->find('temperature')).'°C';
 	}
