@@ -19,7 +19,9 @@ class AppController {
 		$this->Gladys->direPhrase('C\'est fait.');
 	}
 	public function deverrouiller() {
-		$this->App->ecrireFichier('verouillage.txt', $this->val);
+		$this->Prise->find('verouillage');
+		$this->Prise->toggle(1);
+		$this->App->save();
 	}
 	public function verouiller() {
 		$this->Prise->code = '10101';
@@ -39,12 +41,10 @@ class AppController {
 		exec('sudo reboot');
 	}
 	public function ouvrir() {
-		$this->Prise->code = '11100';
-		$this->Prise->toggle('3','verouillage',0);
-		$this->Prise->code = '11100';
-		$this->Prise->toggle('2','',0);	
+		$this->Prise->find('porte');
+		$this->Prise->toggle(0);
 		sleep(7);
-		$this->Prise->toggle('2','',1);	
+		$this->Prise->toggle(1);	
 	}
 	public function pc() {
 		if($this->val) { 
@@ -77,32 +77,17 @@ class AppController {
 		}
 	}
 	public function ping() {
-		//TODO : Make this a PC model method
-		$pc = exec('ping -c 1 -W 1 '.IPPC.'');
-		if ($pc == "") {
-			$checked = '';
-		} else {
-			$checked = 'checked';
-		}
+		$checked = $this->Pc->ping();
 		include($this->viewpath.'ping-view.php');
 	}
 	public function decodeur() {
-		$this->Prise->code = '11100';
-		$this->Prise->toggle('1','decodeur',$this->val);			
-	}
-
-	public function tablette() {
-		$this->Prise->code = '11100';
-		$this->Prise->toggle('2','',$this->val);			
+		$this->Prise->find('decodeur');			
+		$this->Prise->toggle($this->val);
 	}
 
 	public function lampe($lampe_to_toggle) {
-		$this->Prise->code = '10101';
-		$this->Prise->toggle($lampe_to_toggle,'lampe'.$lampe_to_toggle,$this->val);			
-	}
-
-	public function camera() {
-		include $this->viewpath.'musique-view.php';
+		$this->Prise->find('lampe'.$lampe_to_toggle);			
+		$this->Prise->toggle($this->val);
 	}
 
 	public function routeur() {
@@ -119,9 +104,10 @@ class AppController {
 		$this->viewpath = getcwd().'/app/Views/';
 		$this->rootpath = getcwd().'/';
 
-		$models = ['AppModel','SmsModel','MusicModel','GladysModel','PriseModel','PcModel'];
+		$models = scandir(getcwd().'/app/Models/', 1);
+
 		foreach ($models as $model) {
-			$instance_name = str_replace('Model','',$model);
+			$instance_name = str_replace('Model.php','',$model);
 			$this->$instance_name = new $model;
 		}
 

@@ -89,4 +89,12 @@ class AppModel {
 		}
 		return $entity;
 	}
+	protected function save() {
+		$database = fopen('/datas/datas.json');
+		fwrite($database, json_encode($this->datas));
+		fclose($database);
+	}
+	public function __construct() {
+		$this->datas = json_decode ('/datas/datas.json', true);
+	}
 }

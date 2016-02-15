@@ -1,0 +1,56 @@
+{
+    "devices": {
+        "alarme": {
+            "statut": 1,
+            },
+        "auto-chauffage": {
+            "statut": 1,
+            },
+        "verouillage": {
+            "statut": 1,
+            },
+        "decodeur": {
+            "statut": 1,
+            "prise_number":1,
+            "code": "11100",
+            "count": 0,
+            },
+        "lampe1": {
+            "statut": 1,
+            "prise_number":1,
+            "code": "10101",
+            "count": 0,
+            },
+        "lampe2": {
+            "statut": 1,
+            "prise_number":2,
+            "code": "10101",
+            "count": 0,
+            },
+        "lampe3": {
+            "statut": 1,
+            "prise_number":3,
+            "code": "10101",
+            "count": 0,
+            },
+        "chauffage": {
+            "statut": 1,
+            "prise_number":4,
+            "code": "10101",
+            "count": 0,
+            },
+        "porte": {
+            "statut": 1,
+            "prise_number":4,
+            "code": "010101",
+            "count": 0,
+        },
+        "pc": {
+            "count": 0,
+        }
+    },
+    "sensors": {
+        "humidite": "49.00",
+        "temperature": "23.00",
+    }
+}
