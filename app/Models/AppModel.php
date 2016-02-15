@@ -3,22 +3,8 @@ class AppModel {
 	protected $numbprises = 4;
 	protected $capteurtemp = true;
 	protected $capteurhum = true;
+	protected $datas;
 
-
-	public function ecrireFichier($fichier,$contenu) {
-		$fichier = fopen($this->rootpath.$fichier, 'r+');
-		fseek($fichier, 0);
-		fputs($fichier, $contenu); 
-		fclose($fichier);
-	}
-
-	public function lireFichier($fichier) {
-		$fichier = fopen($this->rootpath.$fichier, 'r+');
-		$content = fgets($fichier);
-		fclose($fichier);
-
-		return $content;
-	}
 	public function ecrireDate($fichier){
 		$date = date('j/n \à H:i');
 		$this->ecrireFichier('stats/'.$fichier.'-compteur.txt',$date);
@@ -49,22 +35,21 @@ class AppModel {
 		}
 	}
 	public function getCurrentState() {
+		$this->Prise = new PriseModel();
+		$this->Capteur = new CapteurModel();
 		$states = [];
 		for ($i = 1; $i < $this->numbprises; $i++) {
-			$states['lampe'.$i] = $this->lireFichier('datas/lampe'.$i.'.txt', 'r+');
-			$states['lampe'.$i] = ($states['lampe'.$i] == '1') ? 'checked' : '';
+			$states['lampe'.$i] = $this->Prise->find('lampe'.$i);
+			$states['lampe'.$i] = ($states['lampe'.$i]['statut'] == 1) ? 'checked' : '';
 		}
-
-		$states['decodeur'] = $this->lireFichier('datas/decodeur.txt');
-		$states['decodeur'] = ($states['decodeur'] == '1') ? 'checked' : '';
+		$states['decodeur'] = $this->Prise->find('decodeur');
+		$states['decodeur'] = ($states['decodeur']['statut'] == 1) ? 'checked' : '';
 
 		if($this->capteurtemp){
-			$states['temperature'] = $this->lireFichier('datas/temperature.txt')."°C"; 
-			$states['temperature'] = str_replace('.000', '', $states['temperature']);
+			$states['temperature'] = $this->Capteur->get_temperature();
 		}
 		if($this->capteurhum){
-			$states['humidite'] = $this->lireFichier('datas/humidite.txt')."%"; 
-			$states['humidite'] = str_replace('.000', '', $states['humidite']);
+			$states['humidite'] = $this->Capteur->get_humidite();
 		}
 		return $states;
 	}
@@ -90,11 +75,13 @@ class AppModel {
 		return $entity;
 	}
 	protected function save() {
-		$database = fopen('/datas/datas.json');
+		$database = fopen(getcwd().'/datas/datas.json','r+');
+		ftruncate($database,0);
 		fwrite($database, json_encode($this->datas));
 		fclose($database);
 	}
 	public function __construct() {
-		$this->datas = json_decode ('/datas/datas.json', true);
+		$json = file_get_contents(getcwd().'/datas/datas.json');
+		$this->datas = json_decode($json, true);
 	}
 }

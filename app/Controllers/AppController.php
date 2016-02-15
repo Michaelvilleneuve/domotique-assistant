@@ -107,8 +107,11 @@ class AppController {
 		$models = scandir(getcwd().'/app/Models/', 1);
 
 		foreach ($models as $model) {
-			$instance_name = str_replace('Model.php','',$model);
-			$this->$instance_name = new $model;
+			if (!is_dir(getcwd().'/app/Models/'.$model)) {
+				$instance_name = str_replace('Model.php','',$model);
+				$model_name = str_replace('.php','',$model);
+				$this->$instance_name = new $model_name;
+			}
 		}
 
 		if ( isset($_POST['val']) )
